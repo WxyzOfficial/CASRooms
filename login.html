@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>CAS Door Calendar · Login</title>
+    <!-- Font Awesome (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Favicon: CAS logo -->
+    <link rel="icon" href="https://wxyzofficial.sirv.com/USC-Election/cas.png" type="image/png" />
+    <style>
+        /* ----- GLOBAL RESET & VARIABLES ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #0a3d6b;
+            --primary-yellow: #f5b81b;
+            --white: #ffffff;
+            --light-bg: #f5f9ff;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --shadow-soft: 0 12px 30px rgba(0, 20, 40, 0.08);
+            --radius-card: 24px;
+            --radius-btn: 40px;
+            --transition: 0.25s ease;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background: var(--light-bg);
+            color: #1a2634;
+        }
+
+        /* sticky footer wrapper */
+        #app-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ----- LOGIN CARD ----- */
+        .login-container {
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: var(--radius-card);
+            padding: 2.5rem 2.2rem;
+            box-shadow: var(--shadow-soft), 0 0 0 1px rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: var(--transition);
+        }
+
+        .login-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 20, 40, 0.12);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .login-logo img {
+            height: 72px;
+            width: auto;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-logo h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            letter-spacing: -0.5px;
+        }
+
+        .login-logo h1 span {
+            font-weight: 300;
+            color: #2c3e50;
+        }
+
+        .login-logo p {
+            color: #4a5a6e;
+            font-size: 0.95rem;
+            margin-top: 0.2rem;
+        }
+
+        /* ----- BACK TO INDEX BUTTON ----- */
+        .back-to-index {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-to-index a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-blue);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--radius-btn);
+            background: rgba(10, 61, 107, 0.06);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .back-to-index a:hover {
+            background: rgba(10, 61, 107, 0.12);
+            transform: translateX(-3px);
+        }
+
+        .back-to-index a i {
+            font-size: 0.9rem;
+        }
+
+        /* ----- FORM ELEMENTS ----- */
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #2c3e50;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 40px;
+            border: 2px solid #e2e8f0;
+            transition: var(--transition);
+        }
+
+        .form-group .input-wrapper:focus-within {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(10, 61, 107, 0.08);
+        }
+
+        .form-group .input-wrapper i {
+            position: absolute;
+            left: 16px;
+            color: #7a8a9e;
+            font-size: 1rem;
+        }
+
+        .form-group .input-wrapper input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 3rem;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            outline: none;
+            color: #1a2634;
+        }
+
+        .form-group .input-wrapper input::placeholder {
+            color: #a0b0c4;
+        }
+
+        /* remember & forgot */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.2rem 0 1.6rem;
+            font-size: 0.9rem;
+        }
+
+        .form-options label {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            color: #2c3e50;
+        }
+
+        .form-options label input[type="checkbox"] {
+            accent-color: var(--primary-blue);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .form-options a {
+            color: var(--primary-blue);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .form-options a:hover {
+            text-decoration: underline;
+        }
+
+        /* buttons */
+        .btn-login {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: var(--radius-btn);
+            font-weight: 700;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 6px 14px rgba(10, 61, 107, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .btn-login:hover:not(:disabled) {
+            background: #0a2f52;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(10, 61, 107, 0.3);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            transform: none;
+            pointer-events: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: var(--radius-btn);
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 12px rgba(10, 61, 107, 0.2);
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background: #0a2f52;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(10, 61, 107, 0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            padding: 0.7rem 1.8rem;
+            border-radius: var(--radius-btn);
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .signup-row {
+            text-align: center;
+            margin-top: 1.8rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .signup-row p {
+            color: #4a5a6e;
+            font-size: 0.95rem;
+        }
+
+        .signup-row a {
+            color: var(--primary-blue);
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .signup-row a:hover {
+            text-decoration: underline;
+        }
+
+        /* ----- FOOTER (sticky) ----- */
+        .app-footer {
+            flex-shrink: 0;
+            background: white;
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            padding: 1.2rem 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            letter-spacing: 0.3px;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .app-footer strong {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        /* ----- MODAL (reusable) ----- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: white;
+            max-width: 480px;
+            width: 92%;
+            border-radius: 28px;
+            padding: 2rem 2rem 2.2rem;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            transform: scale(0.96) translateY(20px);
+            transition: 0.25s ease;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-box h2 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+        }
+
+        .modal-box p {
+            margin-bottom: 0.8rem;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+
+        .modal-box .form-group {
+            margin-top: 1rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        /* ----- LOADING SPINNER ----- */
+        .loader-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.2s;
+        }
+
+        .loader-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .spinner {
+            border: 6px solid #e9edf2;
+            border-top: 6px solid var(--primary-blue);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ----- TOAST ----- */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            max-width: 380px;
+        }
+
+        .toast-item {
+            background: #1e2a36;
+            color: white;
+            padding: 0.9rem 1.6rem;
+            border-radius: 40px;
+            font-weight: 500;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .toast-item.success {
+            background: #0b5e2e;
+        }
+
+        .toast-item.error {
+            background: #a11f2f;
+        }
+
+        .toast-item.info {
+            background: var(--primary-blue);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 2rem 1.5rem;
+            }
+            .login-logo h1 {
+                font-size: 1.3rem;
+            }
+            .login-logo img {
+                height: 56px;
+            }
+            .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app-wrapper">
+        <!-- MAIN: LOGIN -->
+        <main>
+            <div class="login-container">
+                <div class="login-card">
+                    <!-- Back to Index Button -->
+                    <div class="back-to-index">
+                        <a href="index.html">
+                            <i class="fas fa-arrow-left"></i> Back to Calendar
+                        </a>
+                    </div>
+
+                    <div class="login-logo">
+                        <img src="https://wxyzofficial.sirv.com/USC-Election/cas.png" alt="CAS Logo" />
+                        <h1>CAS <span>Door Calendar</span></h1>
+                        <p><i class="fas fa-door-open"></i> Room Assignment System</p>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="loginForm" autocomplete="off">
+                        <div class="form-group">
+                            <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="loginEmail" placeholder="your@email.com" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="loginPassword" placeholder="Enter password" required />
+                            </div>
+                        </div>
+
+                        <div class="form-options">
+                            <label>
+                                <input type="checkbox" id="rememberMe" /> Remember Me
+                            </label>
+                            <a id="forgotPasswordLink"><i class="fas fa-question-circle"></i> Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" class="btn-login" id="loginBtn">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </form>
+
+                    <div class="signup-row">
+                        <p>Don't have an account? <a id="createAccountLink">Create Account</a></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- STICKY FOOTER -->
+        <footer class="app-footer">
+            Designed and Developed by: <strong>Steven Macapañas</strong>
+        </footer>
+    </div>
+
+    <!-- TOAST container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- LOADING OVERLAY -->
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- MODAL (reusable) -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box" id="modalBox">
+            <h2 id="modalTitle">Modal</h2>
+            <div id="modalBody">
+                <p id="modalMessage">Message</p>
+            </div>
+            <div class="modal-actions" id="modalActions">
+                <button class="btn-secondary" id="modalCancelBtn" style="display:none;">Cancel</button>
+                <button class="btn-primary" id="modalConfirmBtn">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase v10+ Modular (CDN) -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        // ----- IMPORTS -----
+        import { initializeApp } from 'firebase/app';
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            sendPasswordResetEmail,
+            setPersistence,
+            browserLocalPersistence,
+            browserSessionPersistence,
+            onAuthStateChanged,
+            signOut
+        } from 'firebase/auth';
+        import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
+
+        // ----- FIREBASE CONFIG -----
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPpmLPiRmLq0bXvHpcEFh6uvnF7RFqZnQ",
+            authDomain: "a7kp9xq2.firebaseapp.com",
+            projectId: "a7kp9xq2",
+            storageBucket: "a7kp9xq2.firebasestorage.app",
+            messagingSenderId: "778927332114",
+            appId: "1:778927332114:web:1e6920c30f4fab9b1031cb",
+            measurementId: "G-XJ56STP3Q7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ----- DOM REFS -----
+        const loginForm = document.getElementById('loginForm');
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const rememberMe = document.getElementById('rememberMe');
+        const forgotLink = document.getElementById('forgotPasswordLink');
+        const createAccountLink = document.getElementById('createAccountLink');
+
+        // Modal
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const modalBody = document.getElementById('modalBody');
+        const modalActions = document.getElementById('modalActions');
+
+        // Toast
+        const toastContainer = document.getElementById('toastContainer');
+
+        // Loader
+        const loader = document.getElementById('loaderOverlay');
+
+        // ----- HELPERS -----
+        function showToast(msg, type = 'info') {
+            const el = document.createElement('div');
+            el.className = `toast-item ${type}`;
+            el.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${msg}`;
+            toastContainer.appendChild(el);
+            setTimeout(() => el.remove(), 3500);
+        }
+
+        function showLoader(show = true) {
+            loader.classList.toggle('active', show);
+        }
+
+        function showModal(title, msg, confirmText = 'OK', cancelText = null, onConfirm = null, onCancel = null) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = msg;
+            modalConfirmBtn.textContent = confirmText || 'OK';
+            modalConfirmBtn.style.display = 'inline-flex';
+
+            if (cancelText) {
+                modalCancelBtn.style.display = 'inline-flex';
+                modalCancelBtn.textContent = cancelText;
+            } else {
+                modalCancelBtn.style.display = 'none';
+            }
+
+            // Reset actions
+            modalConfirmBtn.onclick = () => {
+                modalOverlay.classList.remove('active');
+                if (onConfirm) onConfirm();
+            };
+            modalCancelBtn.onclick = () => {
+                modalOverlay.classList.remove('active');
+                if (onCancel) onCancel();
+            };
+
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+        }
+
+        // ----- AUTH STATE -----
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Check if user has admin role (optional: we just redirect to admin)
+                try {
+                    const userDoc = await getDoc(doc(db, 'users', user.uid));
+                    if (userDoc.exists() && userDoc.data().role === 'admin') {
+                        window.location.href = 'admin.html';
+                        return;
+                    }
+                } catch (e) {
+                    // if no role, still allow access to admin? we'll redirect anyway
+                }
+                // If logged in, go to admin (or index) — we prefer admin
+                window.location.href = 'admin.html';
+            }
+        });
+
+        // ----- LOGIN -----
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value.trim();
+
+            if (!email || !password) {
+                showModal('Error', 'Please enter both email and password.');
+                return;
+            }
+
+            // Email validation
+            if (!email.includes('@') || !email.includes('.')) {
+                showModal('Error', 'Please enter a valid email address.');
+                return;
+            }
+
+            if (password.length < 6) {
+                showModal('Error', 'Password must be at least 6 characters.');
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            showLoader(true);
+
+            try {
+                // Set persistence
+                await setPersistence(auth, rememberMe.checked ? browserLocalPersistence : browserSessionPersistence);
+
+                const userCred = await signInWithEmailAndPassword(auth, email, password);
+                showToast('Login successful!', 'success');
+
+                // Check if admin
+                const userDoc = await getDoc(doc(db, 'users', userCred.user.uid));
+                if (userDoc.exists() && userDoc.data().role === 'admin') {
+                    window.location.href = 'admin.html';
+                } else {
+                    // If not admin, but logged in, we still go to admin? or index?
+                    // As per spec, admin.html is protected, but we allow any authenticated user to access admin.
+                    // We'll redirect to admin anyway.
+                    window.location.href = 'admin.html';
+                }
+            } catch (error) {
+                showLoader(false);
+                let msg = 'Login failed. Please check your credentials.';
+                if (error.code === 'auth/user-not-found') msg = 'No account found with this email.';
+                if (error.code === 'auth/wrong-password') msg = 'Incorrect password.';
+                if (error.code === 'auth/too-many-requests') msg = 'Too many attempts. Please try again later.';
+                if (error.code === 'auth/invalid-email') msg = 'Invalid email format.';
+                showModal('Login Error', msg);
+                showToast(msg, 'error');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                showLoader(false);
+            }
+        });
+
+        // ----- FORGOT PASSWORD -----
+        forgotLink.addEventListener('click', () => {
+            // Show a modal with email input
+            modalTitle.textContent = 'Reset Password';
+            modalMessage.innerHTML = `
+                <p>Enter your email address and we'll send you a password reset link.</p>
+                <div class="form-group" style="margin-top:0.8rem;">
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="resetEmailInput" placeholder="your@email.com" style="width:100%;padding:0.8rem 1rem 0.8rem 3rem;border:none;background:transparent;outline:none;font-size:1rem;" />
+                    </div>
+                </div>
+            `;
+            modalConfirmBtn.textContent = 'Send Reset Link';
+            modalCancelBtn.style.display = 'inline-flex';
+            modalCancelBtn.textContent = 'Cancel';
+
+            modalConfirmBtn.onclick = async () => {
+                const resetEmail = document.getElementById('resetEmailInput').value.trim();
+                if (!resetEmail || !resetEmail.includes('@')) {
+                    showToast('Please enter a valid email.', 'error');
+                    return;
+                }
+                closeModal();
+                showLoader(true);
+                try {
+                    await sendPasswordResetEmail(auth, resetEmail);
+                    showToast('Password reset email sent!', 'success');
+                    showModal('Success', 'Check your email for the password reset link.');
+                } catch (error) {
+                    showLoader(false);
+                    let msg = 'Failed to send reset email.';
+                    if (error.code === 'auth/user-not-found') msg = 'No account found with this email.';
+                    showModal('Error', msg);
+                } finally {
+                    showLoader(false);
+                }
+            };
+
+            modalCancelBtn.onclick = closeModal;
+            modalOverlay.classList.add('active');
+        });
+
+        // ----- CREATE ACCOUNT (Sign Up) -----
+        createAccountLink.addEventListener('click', () => {
+            // Show signup modal
+            modalTitle.textContent = 'Create Account';
+            modalMessage.innerHTML = `
+                <p>Sign up to access the admin dashboard.</p>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="signupName" placeholder="John Doe" style="width:100%;padding:0.8rem 1rem 0.8rem 3rem;border:none;background:transparent;outline:none;font-size:1rem;" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signupEmail" placeholder="your@email.com" style="width:100%;padding:0.8rem 1rem 0.8rem 3rem;border:none;background:transparent;outline:none;font-size:1rem;" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password (min 6 characters)</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signupPassword" placeholder="Create password" style="width:100%;padding:0.8rem 1rem 0.8rem 3rem;border:none;background:transparent;outline:none;font-size:1rem;" />
+                    </div>
+                </div>
+            `;
+            modalConfirmBtn.textContent = 'Create Account';
+            modalCancelBtn.style.display = 'inline-flex';
+            modalCancelBtn.textContent = 'Cancel';
+
+            modalConfirmBtn.onclick = async () => {
+                const name = document.getElementById('signupName').value.trim();
+                const email = document.getElementById('signupEmail').value.trim();
+                const password = document.getElementById('signupPassword').value.trim();
+
+                if (!name || !email || !password) {
+                    showToast('Please fill in all fields.', 'error');
+                    return;
+                }
+                if (!email.includes('@') || !email.includes('.')) {
+                    showToast('Please enter a valid email.', 'error');
+                    return;
+                }
+                if (password.length < 6) {
+                    showToast('Password must be at least 6 characters.', 'error');
+                    return;
+                }
+
+                closeModal();
+                showLoader(true);
+                try {
+                    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+                    // Save user data
+                    await setDoc(doc(db, 'users', userCred.user.uid), {
+                        name: name,
+                        email: email,
+                        role: 'admin', // default admin
+                        createdAt: new Date().toISOString()
+                    });
+                    showToast('Account created! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'admin.html';
+                    }, 1000);
+                } catch (error) {
+                    showLoader(false);
+                    let msg = 'Failed to create account.';
+                    if (error.code === 'auth/email-already-in-use') msg = 'Email already in use.';
+                    if (error.code === 'auth/weak-password') msg = 'Password is too weak.';
+                    showModal('Error', msg);
+                } finally {
+                    showLoader(false);
+                }
+            };
+
+            modalCancelBtn.onclick = closeModal;
+            modalOverlay.classList.add('active');
+        });
+
+        // ----- CLOSE MODAL ON OVERLAY CLICK -----
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        // ----- KEYBOARD: ESC to close modal -----
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        console.log('CAS Door Calendar · Login ready.');
+    </script>
+</body>
+</html>
