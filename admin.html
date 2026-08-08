@@ -6,6 +6,9 @@
     <title>CAS Door Calendar · Admin</title>
     <!-- Font Awesome (free) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
     <!-- Favicon: CAS logo -->
     <link rel="icon" href="https://wxyzofficial.sirv.com/USC-Election/cas.png" type="image/png" />
     <style>
@@ -196,10 +199,10 @@
             color: var(--primary-blue);
         }
 
-        /* ----- STATS CARDS ----- */
+        /* ----- STATS CARDS (Dashboard) ----- */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1.2rem;
             margin-bottom: 2.2rem;
         }
@@ -234,6 +237,102 @@
             float: right;
             font-size: 1.8rem;
             color: rgba(10, 61, 107, 0.15);
+        }
+
+        /* Building analytics cards */
+        .building-analytics {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .building-card {
+            background: white;
+            border-radius: var(--radius-card);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-soft);
+            border-top: 4px solid var(--primary-blue);
+        }
+
+        .building-card h3 {
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .building-card .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f3f7;
+        }
+
+        .building-card .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .building-card .stat-row .label {
+            color: #4a5a6e;
+            font-weight: 500;
+        }
+
+        .building-card .stat-row .value {
+            font-weight: 600;
+            color: #1a2634;
+        }
+
+        .building-card .stat-row .value.available {
+            color: #28a745;
+        }
+
+        .building-card .stat-row .value.occupied {
+            color: #dc3545;
+        }
+
+        /* Chart containers */
+        .chart-container {
+            background: white;
+            border-radius: var(--radius-card);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-container h3 {
+            color: var(--primary-blue);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 220px;
+        }
+
+        @media (max-width: 768px) {
+            .building-analytics {
+                grid-template-columns: 1fr;
+            }
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+            .chart-wrapper {
+                height: 200px;
+            }
         }
 
         /* ----- SECTION TITLE ----- */
@@ -619,6 +718,12 @@
             .top-bar .user-info {
                 justify-content: center;
             }
+            .building-analytics {
+                grid-template-columns: 1fr;
+            }
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -629,6 +734,18 @@
                 font-size: 0.8rem;
                 min-width: 600px;
             }
+        }
+
+        /* Hide sections by default */
+        #dashboardSection .table-wrapper,
+        #dashboardSection .section-title {
+            display: none !important;
+        }
+
+        #assignmentsSection .stats-grid,
+        #assignmentsSection .building-analytics,
+        #assignmentsSection .chart-grid {
+            display: none !important;
         }
     </style>
 </head>
@@ -643,8 +760,6 @@
             <nav class="sidebar-nav">
                 <a href="#" class="active" data-section="dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
                 <a href="#" data-section="assignments"><i class="fas fa-door-open"></i> Room Assignment</a>
-                <a href="#" data-section="search"><i class="fas fa-search"></i> Search</a>
-                <a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a>
                 <a href="index.html" class="view-calendar" target="_blank"><i class="fas fa-calendar-alt"></i> View Calendar</a>
             </nav>
             <div class="sidebar-footer">
@@ -669,96 +784,133 @@
 
             <!-- DASHBOARD SECTION -->
             <div id="dashboardSection">
+                <!-- Overall Stats -->
                 <div class="stats-grid" id="statsGrid">
                     <div class="stat-card"><span class="stat-icon"><i class="fas fa-door-open"></i></span><div class="stat-number" id="statTotalRooms">0</div><div class="stat-label">Total Rooms</div></div>
                     <div class="stat-card"><span class="stat-icon"><i class="fas fa-book"></i></span><div class="stat-number" id="statTotalSubjects">0</div><div class="stat-label">Total Subjects</div></div>
                     <div class="stat-card"><span class="stat-icon"><i class="fas fa-chalkboard-teacher"></i></span><div class="stat-number" id="statTotalFaculty">0</div><div class="stat-label">Total Faculty</div></div>
-                    <div class="stat-card" style="border-left-color:#28a745;"><span class="stat-icon"><i class="fas fa-check-circle" style="color:#28a745;"></i></span><div class="stat-number" id="statTodayAssigned">0</div><div class="stat-label">Today's Assigned</div></div>
-                    <div class="stat-card" style="border-left-color:#17a2b8;"><span class="stat-icon"><i class="fas fa-clock" style="color:#17a2b8;"></i></span><div class="stat-number" id="statAvailableRooms">0</div><div class="stat-label">Available Rooms</div></div>
-                    <div class="stat-card" style="border-left-color:#dc3545;"><span class="stat-icon"><i class="fas fa-times-circle" style="color:#dc3545;"></i></span><div class="stat-number" id="statOccupiedRooms">0</div><div class="stat-label">Occupied Rooms</div></div>
+                    <div class="stat-card" style="border-left-color:#28a745;"><span class="stat-icon"><i class="fas fa-check-circle" style="color:#28a745;"></i></span><div class="stat-number" id="statTodayAssigned">0</div><div class="stat-label">Today's Assignments</div></div>
+                </div>
+
+                <!-- Building Analytics Cards -->
+                <div class="building-analytics">
+                    <div class="building-card" id="newCasAnalytics">
+                        <h3><i class="fas fa-building" style="color:var(--primary-blue);"></i> NEW CAS BUILDING</h3>
+                        <div class="stat-row"><span class="label">Total Rooms</span><span class="value" id="newCasTotal">0</span></div>
+                        <div class="stat-row"><span class="label">Available</span><span class="value available" id="newCasAvailable">0</span></div>
+                        <div class="stat-row"><span class="label">Occupied</span><span class="value occupied" id="newCasOccupied">0</span></div>
+                    </div>
+
+                    <div class="building-card" id="acadAnalytics">
+                        <h3><i class="fas fa-building" style="color:var(--primary-blue);"></i> ACAD BUILDING</h3>
+                        <div class="stat-row"><span class="label">Total Rooms</span><span class="value" id="acadTotal">0</span></div>
+                        <div class="stat-row"><span class="label">Available</span><span class="value available" id="acadAvailable">0</span></div>
+                        <div class="stat-row"><span class="label">Occupied</span><span class="value occupied" id="acadOccupied">0</span></div>
+                    </div>
+
+                    <div class="building-card" id="overallAnalytics">
+                        <h3><i class="fas fa-chart-pie" style="color:var(--primary-blue);"></i> Overall Status</h3>
+                        <div class="stat-row"><span class="label">Total Rooms</span><span class="value" id="overallTotal">0</span></div>
+                        <div class="stat-row"><span class="label">Available</span><span class="value available" id="overallAvailable">0</span></div>
+                        <div class="stat-row"><span class="label">Occupied</span><span class="value occupied" id="overallOccupied">0</span></div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="chart-grid">
+                    <div class="chart-container">
+                        <h3><i class="fas fa-chart-pie"></i> Overall Room Status</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="overallPieChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3><i class="fas fa-chart-bar"></i> Building Comparison</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="buildingBarChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- ASSIGNMENT FORM -->
-            <div class="assignment-form" id="assignmentForm">
-                <h3 id="formTitle" style="color:var(--primary-blue);margin-bottom:1rem;"><i class="fas fa-plus-circle"></i> Add Assignment</h3>
-                <div class="form-grid">
-                    <div class="form-group"><label>Faculty Name</label><input type="text" id="facultyName" placeholder="Dr. Juan Dela Cruz" /></div>
-                    <div class="form-group"><label>Subject</label><input type="text" id="subject" placeholder="Math 101" /></div>
-                    <div class="form-group"><label>Course</label><input type="text" id="course" placeholder="BS Math" /></div>
-                    <div class="form-group"><label>Section</label><input type="text" id="section" placeholder="A" /></div>
-                    <div class="form-group"><label>Building</label>
-                        <select id="building"><option value="NEW CAS BUILDING">NEW CAS BUILDING</option><option value="ACAD BUILDING">ACAD BUILDING</option></select>
+            <!-- ASSIGNMENTS SECTION -->
+            <div id="assignmentsSection" style="display:none;">
+                <!-- ASSIGNMENT FORM -->
+                <div class="assignment-form" id="assignmentForm">
+                    <h3 id="formTitle" style="color:var(--primary-blue);margin-bottom:1rem;"><i class="fas fa-plus-circle"></i> Add Assignment</h3>
+                    <div class="form-grid">
+                        <div class="form-group"><label>Faculty Name</label><input type="text" id="facultyName" placeholder="Dr. Juan Dela Cruz" /></div>
+                        <div class="form-group"><label>Subject</label><input type="text" id="subject" placeholder="Math 101" /></div>
+                        <div class="form-group"><label>Course</label><input type="text" id="course" placeholder="BS Math" /></div>
+                        <div class="form-group"><label>Section</label><input type="text" id="section" placeholder="A" /></div>
+                        <div class="form-group"><label>Building</label>
+                            <select id="buildingSelect">
+                                <option value="NEW CAS BUILDING">NEW CAS BUILDING</option>
+                                <option value="ACAD BUILDING">ACAD BUILDING</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Floor</label>
+                            <select id="floorSelect">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Room</label>
+                            <select id="roomSelect">
+                                <!-- Dynamic options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Day</label>
+                            <select id="daySelect">
+                                <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+                                <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Start Time</label><input type="time" id="startTimeInput" /></div>
+                        <div class="form-group"><label>End Time</label><input type="time" id="endTimeInput" /></div>
+                        <div class="form-group" style="grid-column:1/-1;"><label>Remarks</label><textarea id="remarksInput" rows="2" placeholder="Optional notes"></textarea></div>
                     </div>
-                    <div class="form-group"><label>Floor</label><input type="number" id="floor" placeholder="1" min="1" /></div>
-                    <div class="form-group"><label>Room</label>
-                        <select id="room">
-                            <option value="NCAS 1">NCAS 1</option><option value="NCAS 2">NCAS 2</option><option value="NCAS 3">NCAS 3</option>
-                            <option value="NCAS 4">NCAS 4</option><option value="NCAS 5">NCAS 5</option><option value="NCAS 6">NCAS 6</option>
-                            <option value="NCAS 7">NCAS 7</option><option value="NCAS 8">NCAS 8</option><option value="NCAS 9">NCAS 9</option>
-                            <option value="NCAS 10">NCAS 10</option><option value="NCAS 11">NCAS 11</option><option value="NCAS 12">NCAS 12</option>
-                            <option value="NCAS 13">NCAS 13</option><option value="NCAS 14">NCAS 14</option><option value="NCAS 15">NCAS 15</option>
-                            <option value="CAS AVC">CAS AVC</option><option value="Psych/Stat Faculty (ACAD 2)">Psych/Stat Faculty (ACAD 2)</option>
-                            <option value="Research (ACAD 6)">Research (ACAD 6)</option><option value="Psych Lab (ACAD 7)">Psych Lab (ACAD 7)</option>
-                            <option value="Psych Lecture Room (ACAD 8)">Psych Lecture Room (ACAD 8)</option>
-                            <option value="IT LAB">IT LAB</option><option value="CHEM LAB">CHEM LAB</option><option value="BIO LAB">BIO LAB</option>
-                            <option value="BIO-CHEM LAB">BIO-CHEM LAB</option><option value="PSYCH LAB">PSYCH LAB</option>
-                            <option value="STAT LAB">STAT LAB</option><option value="MATH LAB">MATH LAB</option>
-                            <option value="IS LAB (ACAD 1)">IS LAB (ACAD 1)</option><option value="IT LAB (ACAD 2)">IT LAB (ACAD 2)</option>
-                            <option value="IT LAB (ACAD 3)">IT LAB (ACAD 3)</option><option value="ACAD 4">ACAD 4</option>
-                            <option value="ACAD 5">ACAD 5</option><option value="ACAD 6">ACAD 6</option><option value="ACAD 7">ACAD 7</option>
-                            <option value="IS LAB (ACAD 8)">IS LAB (ACAD 8)</option>
-                            <option value="ACAD 1">ACAD 1</option><option value="ACAD 2">ACAD 2</option><option value="ACAD 3">ACAD 3</option>
-                            <option value="ACAD 4">ACAD 4</option><option value="ACAD 5">ACAD 5</option><option value="ACAD 6">ACAD 6</option>
-                            <option value="ACAD 7">ACAD 7</option>
+                    <div class="form-actions">
+                        <button class="btn-primary" id="saveAssignmentBtn"><i class="fas fa-save"></i> Save</button>
+                        <button class="btn-secondary" id="updateAssignmentBtn" style="display:none;"><i class="fas fa-edit"></i> Update</button>
+                        <button class="btn-secondary" id="cancelAssignmentBtn"><i class="fas fa-times"></i> Cancel</button>
+                    </div>
+                </div>
+
+                <!-- ASSIGNMENTS TABLE -->
+                <div class="section-title">
+                    <h2><i class="fas fa-list"></i> Room Assignments</h2>
+                    <button class="btn-primary" id="addAssignmentBtn"><i class="fas fa-plus"></i> Add Assignment</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+                        <input type="text" id="tableSearch" placeholder="Search..." style="flex:1;min-width:200px;padding:0.5rem 1.2rem;border-radius:40px;border:2px solid #e2e8f0;font-size:0.9rem;" />
+                        <select id="tableFilterDay" style="padding:0.5rem 1.2rem;border-radius:40px;border:2px solid #e2e8f0;">
+                            <option value="">All Days</option>
+                            <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option>
+                            <option>Friday</option><option>Saturday</option><option>Sunday</option>
                         </select>
                     </div>
-                    <div class="form-group"><label>Day</label>
-                        <select id="day"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select>
-                    </div>
-                    <div class="form-group"><label>Start Time</label><input type="time" id="startTime" /></div>
-                    <div class="form-group"><label>End Time</label><input type="time" id="endTime" /></div>
-                    <div class="form-group" style="grid-column:1/-1;"><label>Remarks</label><textarea id="remarks" rows="2" placeholder="Optional notes"></textarea></div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn-primary" id="saveAssignmentBtn"><i class="fas fa-save"></i> Save</button>
-                    <button class="btn-secondary" id="updateAssignmentBtn" style="display:none;"><i class="fas fa-edit"></i> Update</button>
-                    <button class="btn-secondary" id="cancelAssignmentBtn"><i class="fas fa-times"></i> Cancel</button>
-                </div>
-            </div>
-
-            <!-- ASSIGNMENTS TABLE -->
-            <div class="section-title">
-                <h2><i class="fas fa-list"></i> Room Assignments</h2>
-                <button class="btn-primary" id="addAssignmentBtn"><i class="fas fa-plus"></i> Add Assignment</button>
-            </div>
-
-            <div class="table-wrapper">
-                <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
-                    <input type="text" id="tableSearch" placeholder="Search..." style="flex:1;min-width:200px;padding:0.5rem 1.2rem;border-radius:40px;border:2px solid #e2e8f0;font-size:0.9rem;" />
-                    <select id="tableFilterDay" style="padding:0.5rem 1.2rem;border-radius:40px;border:2px solid #e2e8f0;">
-                        <option value="">All Days</option>
-                        <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option>
-                        <option>Friday</option><option>Saturday</option><option>Sunday</option>
-                    </select>
-                </div>
-                <table id="assignmentsTable">
-                    <thead>
-                        <tr>
-                            <th>Faculty</th><th>Subject</th><th>Course</th><th>Section</th>
-                            <th>Building</th><th>Floor</th><th>Room</th><th>Day</th><th>Time</th>
-                            <th>Remarks</th><th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <tr><td colspan="11" style="text-align:center;padding:2rem;color:#6c7a8a;">Loading assignments...</td></tr>
-                    </tbody>
-                </table>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0;flex-wrap:wrap;gap:0.5rem;">
-                    <span id="paginationInfo">Showing 0 entries</span>
-                    <div style="display:flex;gap:0.5rem;">
-                        <button class="btn-secondary" id="prevPage" style="padding:0.3rem 1rem;">Prev</button>
-                        <button class="btn-secondary" id="nextPage" style="padding:0.3rem 1rem;">Next</button>
+                    <table id="assignmentsTable">
+                        <thead>
+                            <tr>
+                                <th>Faculty</th><th>Subject</th><th>Course</th><th>Section</th>
+                                <th>Building</th><th>Floor</th><th>Room</th><th>Day</th><th>Time</th>
+                                <th>Remarks</th><th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr><td colspan="11" style="text-align:center;padding:2rem;color:#6c7a8a;">Loading assignments...</td></tr>
+                        </tbody>
+                    </table>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0;flex-wrap:wrap;gap:0.5rem;">
+                        <span id="paginationInfo">Showing 0 entries</span>
+                        <div style="display:flex;gap:0.5rem;">
+                            <button class="btn-secondary" id="prevPage" style="padding:0.3rem 1rem;">Prev</button>
+                            <button class="btn-secondary" id="nextPage" style="padding:0.3rem 1rem;">Next</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -835,14 +987,27 @@
         const userNameDisplay = document.getElementById('userNameDisplay');
         const userEmailDisplay = document.getElementById('userEmailDisplay');
         const logoutBtn = document.getElementById('logoutBtn');
+        const dashboardSection = document.getElementById('dashboardSection');
+        const assignmentsSection = document.getElementById('assignmentsSection');
 
         const statsGrid = document.getElementById('statsGrid');
         const statTotalRooms = document.getElementById('statTotalRooms');
         const statTotalSubjects = document.getElementById('statTotalSubjects');
         const statTotalFaculty = document.getElementById('statTotalFaculty');
         const statTodayAssigned = document.getElementById('statTodayAssigned');
-        const statAvailableRooms = document.getElementById('statAvailableRooms');
-        const statOccupiedRooms = document.getElementById('statOccupiedRooms');
+
+        // Building analytics
+        const newCasTotal = document.getElementById('newCasTotal');
+        const newCasAvailable = document.getElementById('newCasAvailable');
+        const newCasOccupied = document.getElementById('newCasOccupied');
+
+        const acadTotal = document.getElementById('acadTotal');
+        const acadAvailable = document.getElementById('acadAvailable');
+        const acadOccupied = document.getElementById('acadOccupied');
+
+        const overallTotal = document.getElementById('overallTotal');
+        const overallAvailable = document.getElementById('overallAvailable');
+        const overallOccupied = document.getElementById('overallOccupied');
 
         const assignmentForm = document.getElementById('assignmentForm');
         const formTitle = document.getElementById('formTitle');
@@ -850,13 +1015,13 @@
         const subject = document.getElementById('subject');
         const course = document.getElementById('course');
         const section = document.getElementById('section');
-        const building = document.getElementById('building');
-        const floor = document.getElementById('floor');
-        const room = document.getElementById('room');
-        const day = document.getElementById('day');
-        const startTime = document.getElementById('startTime');
-        const endTime = document.getElementById('endTime');
-        const remarks = document.getElementById('remarks');
+        const buildingSelect = document.getElementById('buildingSelect');
+        const floorSelect = document.getElementById('floorSelect');
+        const roomSelect = document.getElementById('roomSelect');
+        const daySelect = document.getElementById('daySelect');
+        const startTimeInput = document.getElementById('startTimeInput');
+        const endTimeInput = document.getElementById('endTimeInput');
+        const remarksInput = document.getElementById('remarksInput');
         const saveBtn = document.getElementById('saveAssignmentBtn');
         const updateBtn = document.getElementById('updateAssignmentBtn');
         const cancelBtn = document.getElementById('cancelAssignmentBtn');
@@ -878,6 +1043,68 @@
 
         const loader = document.getElementById('loaderOverlay');
         const toastContainer = document.getElementById('toastContainer');
+
+        // Room data by building and floor
+        const roomData = {
+            'NEW CAS BUILDING': {
+                1: ['NCAS 1', 'NCAS 2', 'NCAS 3', 'NCAS 4', 'NCAS 5'],
+                2: ['NCAS 6', 'NCAS 7', 'NCAS 8', 'NCAS 9', 'NCAS 10'],
+                3: ['NCAS 11', 'NCAS 12', 'NCAS 13', 'NCAS 14', 'NCAS 15']
+            },
+            'ACAD BUILDING': {
+                1: ['CAS AVC'],
+                2: ['Psych/Stat Faculty (ACAD 2)', 'Research (ACAD 6)', 'Psych Lab (ACAD 7)', 'Psych Lecture Room (ACAD 8)'],
+                3: ['IT LAB', 'CHEM LAB', 'BIO LAB', 'BIO-CHEM LAB', 'PSYCH LAB', 'STAT LAB', 'MATH LAB'],
+                4: ['IS LAB (ACAD 1)', 'IT LAB (ACAD 2)', 'IT LAB (ACAD 3)', 'ACAD 4', 'ACAD 5', 'ACAD 6', 'ACAD 7', 'IS LAB (ACAD 8)'],
+                5: ['ACAD 1', 'ACAD 2', 'ACAD 3', 'ACAD 4', 'ACAD 5', 'ACAD 6', 'ACAD 7']
+            }
+        };
+
+        // Chart instances
+        let overallPieChart = null;
+        let buildingBarChart = null;
+
+        // Update floor options based on building
+        function updateFloorOptions() {
+            const building = buildingSelect.value;
+            const floors = Object.keys(roomData[building] || {}).map(Number);
+            floorSelect.innerHTML = '';
+            floors.forEach(floor => {
+                const option = document.createElement('option');
+                option.value = floor;
+                option.textContent = floor;
+                floorSelect.appendChild(option);
+            });
+            // Update rooms for the first floor
+            updateRoomOptions();
+        }
+
+        // Update room options based on building and floor
+        function updateRoomOptions() {
+            const building = buildingSelect.value;
+            const floor = parseInt(floorSelect.value);
+            const rooms = roomData[building]?.[floor] || [];
+            roomSelect.innerHTML = '';
+            rooms.forEach(room => {
+                const option = document.createElement('option');
+                option.value = room;
+                option.textContent = room;
+                roomSelect.appendChild(option);
+            });
+            if (rooms.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No rooms available';
+                roomSelect.appendChild(option);
+            }
+        }
+
+        // Event listeners for building and floor changes
+        buildingSelect.addEventListener('change', () => {
+            updateFloorOptions();
+        });
+
+        floorSelect.addEventListener('change', updateRoomOptions);
 
         // State
         let allAssignments = [];
@@ -918,7 +1145,7 @@
             return days[new Date().getDay()];
         }
 
-        // Get status (same as index)
+        // Get status
         function getStatus(startTime, endTime) {
             const now = new Date();
             const today = new Date();
@@ -931,6 +1158,182 @@
             if (now < start) return 'upcoming';
             if (now >= start && now <= end) return 'occupied';
             return 'finished';
+        }
+
+        // ----- UPDATE DASHBOARD STATS -----
+        function updateDashboardStats() {
+            const rooms = new Set(allAssignments.map(a => a.room));
+            const subjects = new Set(allAssignments.map(a => a.subject));
+            const faculty = new Set(allAssignments.map(a => a.facultyName));
+
+            const today = getTodayDay();
+            const todayAssignments = allAssignments.filter(a => a.day === today);
+
+            statTotalRooms.textContent = rooms.size || 0;
+            statTotalSubjects.textContent = subjects.size || 0;
+            statTotalFaculty.textContent = faculty.size || 0;
+            statTodayAssigned.textContent = todayAssignments.length || 0;
+
+            // Building analytics
+            const buildings = ['NEW CAS BUILDING', 'ACAD BUILDING'];
+            let overallAvailableCount = 0;
+            let overallOccupiedCount = 0;
+            let overallTotalCount = 0;
+
+            buildings.forEach(building => {
+                const buildingAssignments = allAssignments.filter(a => a.building === building);
+
+                // Get all rooms for this building from roomData
+                const totalRoomsList = roomData[building];
+                let allBuildingRooms = [];
+                Object.values(totalRoomsList || {}).forEach(roomArray => {
+                    allBuildingRooms = allBuildingRooms.concat(roomArray);
+                });
+
+                // Count occupied rooms (rooms that have an assignment that is currently occupied)
+                const occupiedRooms = new Set();
+
+                buildingAssignments.forEach(a => {
+                    const status = getStatus(a.startTime, a.endTime);
+                    if (status === 'occupied') {
+                        occupiedRooms.add(a.room);
+                    }
+                });
+
+                // Available rooms = all rooms that are not occupied
+                const availableRooms = allBuildingRooms.filter(r => !occupiedRooms.has(r));
+
+                overallAvailableCount += availableRooms.length;
+                overallOccupiedCount += occupiedRooms.size;
+                overallTotalCount += allBuildingRooms.length;
+
+                // Update DOM
+                const totalEl = building === 'NEW CAS BUILDING' ? newCasTotal : acadTotal;
+                const availableEl = building === 'NEW CAS BUILDING' ? newCasAvailable : acadAvailable;
+                const occupiedEl = building === 'NEW CAS BUILDING' ? newCasOccupied : acadOccupied;
+
+                totalEl.textContent = allBuildingRooms.length || 0;
+                availableEl.textContent = availableRooms.length || 0;
+                occupiedEl.textContent = occupiedRooms.size || 0;
+            });
+
+            // Update overall stats
+            overallTotal.textContent = overallTotalCount || 0;
+            overallAvailable.textContent = overallAvailableCount || 0;
+            overallOccupied.textContent = overallOccupiedCount || 0;
+
+            // Update charts
+            updateCharts(overallAvailableCount, overallOccupiedCount);
+        }
+
+        // ----- UPDATE CHARTS -----
+        function updateCharts(available, occupied) {
+            // Overall Pie Chart
+            const ctx1 = document.getElementById('overallPieChart').getContext('2d');
+
+            if (overallPieChart) {
+                overallPieChart.destroy();
+            }
+
+            overallPieChart = new Chart(ctx1, {
+                type: 'pie',
+                data: {
+                    labels: ['Available', 'Occupied'],
+                    datasets: [{
+                        data: [available, occupied],
+                        backgroundColor: ['#28a745', '#dc3545'],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 12,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+
+            // Building Bar Chart
+            const ctx2 = document.getElementById('buildingBarChart').getContext('2d');
+
+            const newCasRooms = roomData['NEW CAS BUILDING'];
+            let newCasTotalRooms = 0;
+            Object.values(newCasRooms || {}).forEach(roomArray => {
+                newCasTotalRooms += roomArray.length;
+            });
+
+            const acadRooms = roomData['ACAD BUILDING'];
+            let acadTotalRooms = 0;
+            Object.values(acadRooms || {}).forEach(roomArray => {
+                acadTotalRooms += roomArray.length;
+            });
+
+            const newCasOccupiedCount = parseInt(newCasOccupied.textContent) || 0;
+            const acadOccupiedCount = parseInt(acadOccupied.textContent) || 0;
+
+            if (buildingBarChart) {
+                buildingBarChart.destroy();
+            }
+
+            buildingBarChart = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['NEW CAS BUILDING', 'ACAD BUILDING'],
+                    datasets: [{
+                        label: 'Available',
+                        data: [
+                            newCasTotalRooms - newCasOccupiedCount,
+                            acadTotalRooms - acadOccupiedCount
+                        ],
+                        backgroundColor: '#28a745',
+                        borderRadius: 4
+                    }, {
+                        label: 'Occupied',
+                        data: [newCasOccupiedCount, acadOccupiedCount],
+                        backgroundColor: '#dc3545',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 12,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.7
+                }
+            });
         }
 
         // ----- RENDER TABLE -----
@@ -1008,38 +1411,8 @@
                 btn.addEventListener('click', () => duplicateAssignment(btn.dataset.id));
             });
 
-            // Update stats
-            updateStats();
-        }
-
-        // ----- UPDATE STATS -----
-        function updateStats() {
-            const rooms = new Set(allAssignments.map(a => a.room));
-            const subjects = new Set(allAssignments.map(a => a.subject));
-            const faculty = new Set(allAssignments.map(a => a.facultyName));
-
-            const today = getTodayDay();
-            const todayAssignments = allAssignments.filter(a => a.day === today);
-
-            // Available/Occupied for today
-            let available = 0,
-                occupied = 0;
-            const roomStatus = new Map();
-            todayAssignments.forEach(a => {
-                const st = getStatus(a.startTime, a.endTime);
-                if (st === 'occupied') occupied++;
-                else if (st === 'available') available++;
-            });
-            // If no assignment, room is available
-            const allRoomsToday = new Set(todayAssignments.map(a => a.room));
-            // we don't have a room list, so just approximate
-
-            statTotalRooms.textContent = rooms.size || 0;
-            statTotalSubjects.textContent = subjects.size || 0;
-            statTotalFaculty.textContent = faculty.size || 0;
-            statTodayAssigned.textContent = todayAssignments.length || 0;
-            statAvailableRooms.textContent = available || 0;
-            statOccupiedRooms.textContent = occupied || 0;
+            // Update dashboard stats
+            updateDashboardStats();
         }
 
         // ----- CRUD OPERATIONS -----
@@ -1049,13 +1422,12 @@
             subject.value = '';
             course.value = '';
             section.value = '';
-            building.value = 'NEW CAS BUILDING';
-            floor.value = '';
-            room.value = 'NCAS 1';
-            day.value = 'Monday';
-            startTime.value = '';
-            endTime.value = '';
-            remarks.value = '';
+            buildingSelect.value = 'NEW CAS BUILDING';
+            updateFloorOptions();
+            daySelect.value = 'Monday';
+            startTimeInput.value = '';
+            endTimeInput.value = '';
+            remarksInput.value = '';
             saveBtn.style.display = 'inline-flex';
             updateBtn.style.display = 'none';
             formTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Add Assignment';
@@ -1080,13 +1452,13 @@
                 subject: subject.value.trim(),
                 course: course.value.trim(),
                 section: section.value.trim(),
-                building: building.value,
-                floor: parseInt(floor.value) || 0,
-                room: room.value,
-                day: day.value,
-                startTime: startTime.value,
-                endTime: endTime.value,
-                remarks: remarks.value.trim(),
+                building: buildingSelect.value,
+                floor: parseInt(floorSelect.value) || 0,
+                room: roomSelect.value,
+                day: daySelect.value,
+                startTime: startTimeInput.value,
+                endTime: endTimeInput.value,
+                remarks: remarksInput.value.trim(),
                 createdAt: serverTimestamp(),
                 updatedAt: serverTimestamp()
             };
@@ -1115,13 +1487,13 @@
                 subject: subject.value.trim(),
                 course: course.value.trim(),
                 section: section.value.trim(),
-                building: building.value,
-                floor: parseInt(floor.value) || 0,
-                room: room.value,
-                day: day.value,
-                startTime: startTime.value,
-                endTime: endTime.value,
-                remarks: remarks.value.trim(),
+                building: buildingSelect.value,
+                floor: parseInt(floorSelect.value) || 0,
+                room: roomSelect.value,
+                day: daySelect.value,
+                startTime: startTimeInput.value,
+                endTime: endTimeInput.value,
+                remarks: remarksInput.value.trim(),
                 updatedAt: serverTimestamp()
             };
             if (!data.facultyName || !data.subject || !data.room || !data.startTime || !data.endTime) {
@@ -1148,13 +1520,15 @@
             subject.value = a.subject || '';
             course.value = a.course || '';
             section.value = a.section || '';
-            building.value = a.building || 'NEW CAS BUILDING';
-            floor.value = a.floor || '';
-            room.value = a.room || 'NCAS 1';
-            day.value = a.day || 'Monday';
-            startTime.value = a.startTime || '';
-            endTime.value = a.endTime || '';
-            remarks.value = a.remarks || '';
+            buildingSelect.value = a.building || 'NEW CAS BUILDING';
+            updateFloorOptions();
+            floorSelect.value = a.floor || 1;
+            updateRoomOptions();
+            roomSelect.value = a.room || 'NCAS 1';
+            daySelect.value = a.day || 'Monday';
+            startTimeInput.value = a.startTime || '';
+            endTimeInput.value = a.endTime || '';
+            remarksInput.value = a.remarks || '';
             saveBtn.style.display = 'none';
             updateBtn.style.display = 'inline-flex';
             formTitle.innerHTML = '<i class="fas fa-edit"></i> Edit Assignment';
@@ -1282,28 +1656,13 @@
                 const section = link.dataset.section;
                 if (section === 'dashboard') {
                     pageTitle.innerHTML = '<i class="fas fa-th-large"></i> Dashboard';
-                    document.getElementById('dashboardSection').style.display = 'block';
-                    document.querySelector('.section-title').style.display = 'flex';
-                    document.querySelector('.table-wrapper').style.display = 'block';
+                    dashboardSection.style.display = 'block';
+                    assignmentsSection.style.display = 'none';
                     assignmentForm.classList.remove('visible');
                 } else if (section === 'assignments') {
                     pageTitle.innerHTML = '<i class="fas fa-door-open"></i> Room Assignment';
-                    document.getElementById('dashboardSection').style.display = 'block';
-                    document.querySelector('.section-title').style.display = 'flex';
-                    document.querySelector('.table-wrapper').style.display = 'block';
-                    // show form if hidden
-                } else if (section === 'search') {
-                    pageTitle.innerHTML = '<i class="fas fa-search"></i> Search';
-                    document.getElementById('dashboardSection').style.display = 'block';
-                    document.querySelector('.section-title').style.display = 'flex';
-                    document.querySelector('.table-wrapper').style.display = 'block';
-                    tableSearch.focus();
-                } else if (section === 'settings') {
-                    pageTitle.innerHTML = '<i class="fas fa-cog"></i> Settings';
-                    document.getElementById('dashboardSection').style.display = 'block';
-                    document.querySelector('.section-title').style.display = 'none';
-                    document.querySelector('.table-wrapper').style.display = 'none';
-                    assignmentForm.classList.remove('visible');
+                    dashboardSection.style.display = 'none';
+                    assignmentsSection.style.display = 'block';
                 }
             });
         });
@@ -1312,6 +1671,9 @@
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) closeModal();
         });
+
+        // Initialize form with default values
+        updateFloorOptions();
 
         console.log('CAS Admin ready.');
     </script>
