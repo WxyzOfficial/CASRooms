@@ -536,6 +536,27 @@
             background: #bb2d3b;
         }
 
+        .btn-success {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.8rem;
+            border-radius: var(--radius-btn);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-success:hover {
+            background: #1e7e34;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(40, 167, 69, 0.25);
+        }
+
         /* ----- TOAST, MODAL, LOADER (reused from index) ----- */
         .toast-container {
             position: fixed;
@@ -603,13 +624,15 @@
 
         .modal-box {
             background: white;
-            max-width: 500px;
-            width: 92%;
+            max-width: 700px;
+            width: 94%;
             border-radius: 28px;
             padding: 2rem 2rem 2.2rem;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
             transform: scale(0.96) translateY(20px);
             transition: 0.25s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-overlay.active .modal-box {
@@ -629,6 +652,7 @@
             gap: 1rem;
             justify-content: flex-end;
             flex-wrap: wrap;
+            margin-top: 1rem;
         }
 
         .loader-overlay {
@@ -663,6 +687,232 @@
             to {
                 transform: rotate(360deg);
             }
+        }
+
+        /* ===== BULK FORM STYLES ===== */
+        .bulk-form {
+            background: white;
+            border-radius: var(--radius-card);
+            padding: 1.8rem 2rem;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .bulk-form.visible {
+            display: block;
+        }
+
+        .bulk-form .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem 1.5rem;
+        }
+
+        .bulk-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .bulk-form .form-group label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .bulk-form .form-group input,
+        .bulk-form .form-group select,
+        .bulk-form .form-group textarea {
+            padding: 0.6rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .bulk-form .form-group input:focus,
+        .bulk-form .form-group select:focus,
+        .bulk-form .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(10, 61, 107, 0.06);
+        }
+
+        .bulk-form .day-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1.2rem;
+            padding: 0.4rem 0;
+        }
+
+        .bulk-form .day-checkboxes label {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .bulk-form .day-checkboxes input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        .bulk-form .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* ----- MATRIX TABLE ----- */
+        .matrix-container {
+            background: white;
+            border-radius: var(--radius-card);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .matrix-container .matrix-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .matrix-container .matrix-controls select {
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            background: white;
+        }
+
+        .matrix-container .matrix-controls select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .matrix-table th,
+        .matrix-table td {
+            border: 1px solid #e2e8f0;
+            padding: 0.5rem;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .matrix-table th {
+            background: var(--light-bg);
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        .matrix-table td {
+            background: white;
+        }
+
+        .matrix-table td .slot-btn {
+            background: transparent;
+            border: 2px dashed #c0d0e0;
+            border-radius: 30px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            color: #4a5a6e;
+            width: 100%;
+        }
+
+        .matrix-table td .slot-btn:hover {
+            background: rgba(10, 61, 107, 0.05);
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .matrix-table td .slot-btn.occupied {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #a11f2f;
+            cursor: default;
+        }
+
+        .matrix-table td .slot-btn.occupied:hover {
+            background: #f8d7da;
+        }
+
+        .matrix-table td .slot-info {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* ----- BULK GRID (spreadsheet) ----- */
+        .bulk-grid-container {
+            background: white;
+            border-radius: var(--radius-card);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .bulk-grid-container table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 800px;
+        }
+
+        .bulk-grid-container th,
+        .bulk-grid-container td {
+            border: 1px solid #e2e8f0;
+            padding: 0.4rem 0.6rem;
+            text-align: left;
+        }
+
+        .bulk-grid-container th {
+            background: var(--light-bg);
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        .bulk-grid-container td input,
+        .bulk-grid-container td select {
+            width: 100%;
+            padding: 0.3rem 0.6rem;
+            border: 1px solid transparent;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            background: transparent;
+            transition: var(--transition);
+        }
+
+        .bulk-grid-container td input:focus,
+        .bulk-grid-container td select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background: white;
+            box-shadow: 0 0 0 2px rgba(10, 61, 107, 0.08);
+        }
+
+        .bulk-grid-container td input:hover,
+        .bulk-grid-container td select:hover {
+            background: rgba(10, 61, 107, 0.02);
         }
 
         /* ----- RESPONSIVE ----- */
@@ -708,7 +958,8 @@
             .stats-grid {
                 grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             }
-            .assignment-form .form-grid {
+            .assignment-form .form-grid,
+            .bulk-form .form-grid {
                 grid-template-columns: 1fr;
             }
             .top-bar {
@@ -724,6 +975,10 @@
             .chart-grid {
                 grid-template-columns: 1fr;
             }
+            .modal-box {
+                max-width: 95%;
+                padding: 1.5rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -733,6 +988,12 @@
             .table-wrapper table {
                 font-size: 0.8rem;
                 min-width: 600px;
+            }
+            .matrix-table th,
+            .matrix-table td {
+                padding: 0.3rem;
+                font-size: 0.75rem;
+                min-width: 50px;
             }
         }
 
@@ -835,8 +1096,16 @@
 
             <!-- ASSIGNMENTS SECTION -->
             <div id="assignmentsSection" style="display:none;">
-                <!-- ASSIGNMENT FORM -->
-                <div class="assignment-form" id="assignmentForm">
+                <!-- BULK ENTRY TABS -->
+                <div style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:1.5rem;border-bottom:2px solid var(--border-light);padding-bottom:0.5rem;">
+                    <button class="btn-primary" id="quickAddTab" style="background:var(--primary-blue);"><i class="fas fa-plus-circle"></i> Quick Add</button>
+                    <button class="btn-primary" id="bulkAddTab" style="background:var(--primary-yellow);color:#0a2f52;"><i class="fas fa-copy"></i> Bulk Add</button>
+                    <button class="btn-primary" id="matrixTab" style="background:#17a2b8;"><i class="fas fa-table"></i> Schedule Matrix</button>
+                    <button class="btn-primary" id="gridTab" style="background:#6f42c1;"><i class="fas fa-table"></i> Bulk Grid</button>
+                </div>
+
+                <!-- QUICK ADD FORM -->
+                <div class="assignment-form visible" id="assignmentForm">
                     <h3 id="formTitle" style="color:var(--primary-blue);margin-bottom:1rem;"><i class="fas fa-plus-circle"></i> Add Assignment</h3>
                     <div class="form-grid">
                         <div class="form-group"><label>Faculty Name</label><input type="text" id="facultyName" placeholder="Dr. Juan Dela Cruz" /></div>
@@ -875,6 +1144,114 @@
                         <button class="btn-primary" id="saveAssignmentBtn"><i class="fas fa-save"></i> Save</button>
                         <button class="btn-secondary" id="updateAssignmentBtn" style="display:none;"><i class="fas fa-edit"></i> Update</button>
                         <button class="btn-secondary" id="cancelAssignmentBtn"><i class="fas fa-times"></i> Cancel</button>
+                    </div>
+                </div>
+
+                <!-- BULK ADD FORM -->
+                <div class="bulk-form" id="bulkForm">
+                    <h3 style="color:var(--primary-blue);margin-bottom:1rem;"><i class="fas fa-copy"></i> Bulk Room Assignment</h3>
+                    <p style="color:var(--text-muted);margin-bottom:1rem;font-size:0.9rem;">Create multiple assignments at once by selecting multiple days.</p>
+                    <div class="form-grid">
+                        <div class="form-group"><label>Faculty Name</label><input type="text" id="bulkFacultyName" placeholder="Dr. Juan Dela Cruz" /></div>
+                        <div class="form-group"><label>Subject</label><input type="text" id="bulkSubject" placeholder="Math 101" /></div>
+                        <div class="form-group"><label>Course</label><input type="text" id="bulkCourse" placeholder="BS Math" /></div>
+                        <div class="form-group"><label>Section</label><input type="text" id="bulkSection" placeholder="A" /></div>
+                        <div class="form-group"><label>Building</label>
+                            <select id="bulkBuildingSelect">
+                                <option value="NEW CAS BUILDING">NEW CAS BUILDING</option>
+                                <option value="ACAD BUILDING">ACAD BUILDING</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Floor</label>
+                            <select id="bulkFloorSelect">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Room</label>
+                            <select id="bulkRoomSelect">
+                                <!-- Dynamic options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Start Time</label><input type="time" id="bulkStartTime" /></div>
+                        <div class="form-group"><label>End Time</label><input type="time" id="bulkEndTime" /></div>
+                        <div class="form-group" style="grid-column:1/-1;">
+                            <label>Select Days</label>
+                            <div class="day-checkboxes" id="bulkDayCheckboxes">
+                                <label><input type="checkbox" value="Monday" /> Monday</label>
+                                <label><input type="checkbox" value="Tuesday" /> Tuesday</label>
+                                <label><input type="checkbox" value="Wednesday" /> Wednesday</label>
+                                <label><input type="checkbox" value="Thursday" /> Thursday</label>
+                                <label><input type="checkbox" value="Friday" /> Friday</label>
+                                <label><input type="checkbox" value="Saturday" /> Saturday</label>
+                                <label><input type="checkbox" value="Sunday" /> Sunday</label>
+                            </div>
+                        </div>
+                        <div class="form-group" style="grid-column:1/-1;"><label>Remarks</label><textarea id="bulkRemarks" rows="2" placeholder="Optional notes"></textarea></div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-success" id="saveBulkBtn"><i class="fas fa-save"></i> Save Bulk Assignment</button>
+                        <button class="btn-secondary" id="cancelBulkBtn"><i class="fas fa-times"></i> Cancel</button>
+                    </div>
+                </div>
+
+                <!-- SCHEDULE MATRIX -->
+                <div class="matrix-container" id="matrixContainer" style="display:none;">
+                    <h3 style="color:var(--primary-blue);margin-bottom:1rem;"><i class="fas fa-table"></i> Schedule Matrix</h3>
+                    <div class="matrix-controls">
+                        <label>Building:</label>
+                        <select id="matrixBuilding">
+                            <option value="NEW CAS BUILDING">NEW CAS BUILDING</option>
+                            <option value="ACAD BUILDING">ACAD BUILDING</option>
+                        </select>
+                        <label>Floor:</label>
+                        <select id="matrixFloor"></select>
+                        <label>Room:</label>
+                        <select id="matrixRoom"></select>
+                        <button class="btn-primary" id="loadMatrixBtn"><i class="fas fa-sync"></i> Load Matrix</button>
+                    </div>
+                    <div id="matrixTableWrapper" style="overflow-x:auto;">
+                        <table class="matrix-table" id="matrixTable">
+                            <thead id="matrixHead"></thead>
+                            <tbody id="matrixBody"></tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top:0.8rem;font-size:0.85rem;color:var(--text-muted);">
+                        <i class="fas fa-info-circle"></i> Click <strong>+</strong> to add an assignment. Occupied slots are shown in red.
+                    </div>
+                </div>
+
+                <!-- BULK GRID -->
+                <div class="bulk-grid-container" id="bulkGridContainer" style="display:none;">
+                    <h3 style="color:var(--primary-blue);margin-bottom:1rem;"><i class="fas fa-table"></i> Bulk Schedule Grid</h3>
+                    <p style="color:var(--text-muted);margin-bottom:1rem;font-size:0.9rem;">Enter multiple assignments in rows. Click <strong>+ Add Row</strong> to add more.</p>
+                    <div style="overflow-x:auto;">
+                        <table id="bulkGridTable">
+                            <thead>
+                                <tr>
+                                    <th>Faculty</th>
+                                    <th>Subject</th>
+                                    <th>Course</th>
+                                    <th>Section</th>
+                                    <th>Building</th>
+                                    <th>Floor</th>
+                                    <th>Room</th>
+                                    <th>Day</th>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Remarks</th>
+                                    <th style="width:60px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bulkGridBody">
+                                <!-- Rows will be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;">
+                        <button class="btn-secondary" id="addGridRowBtn"><i class="fas fa-plus"></i> Add Row</button>
+                        <button class="btn-success" id="saveGridBtn"><i class="fas fa-save"></i> Save All Assignments</button>
                     </div>
                 </div>
 
@@ -928,6 +1305,7 @@
         <div class="modal-box">
             <h2 id="modalTitle">Confirm</h2>
             <p id="modalMessage">Are you sure?</p>
+            <div id="modalExtraContent"></div>
             <div class="modal-actions">
                 <button class="btn-secondary" id="modalCancelBtn">Cancel</button>
                 <button class="btn-primary" id="modalConfirmBtn">Confirm</button>
@@ -965,7 +1343,8 @@
             getDocs,
             orderBy,
             where,
-            serverTimestamp
+            serverTimestamp,
+            writeBatch
         } from 'firebase/firestore';
 
         const firebaseConfig = {
@@ -990,25 +1369,23 @@
         const dashboardSection = document.getElementById('dashboardSection');
         const assignmentsSection = document.getElementById('assignmentsSection');
 
-        const statsGrid = document.getElementById('statsGrid');
+        // Stats
         const statTotalRooms = document.getElementById('statTotalRooms');
         const statTotalSubjects = document.getElementById('statTotalSubjects');
         const statTotalFaculty = document.getElementById('statTotalFaculty');
         const statTodayAssigned = document.getElementById('statTodayAssigned');
 
-        // Building analytics
         const newCasTotal = document.getElementById('newCasTotal');
         const newCasAvailable = document.getElementById('newCasAvailable');
         const newCasOccupied = document.getElementById('newCasOccupied');
-
         const acadTotal = document.getElementById('acadTotal');
         const acadAvailable = document.getElementById('acadAvailable');
         const acadOccupied = document.getElementById('acadOccupied');
-
         const overallTotal = document.getElementById('overallTotal');
         const overallAvailable = document.getElementById('overallAvailable');
         const overallOccupied = document.getElementById('overallOccupied');
 
+        // Quick Add
         const assignmentForm = document.getElementById('assignmentForm');
         const formTitle = document.getElementById('formTitle');
         const facultyName = document.getElementById('facultyName');
@@ -1027,6 +1404,44 @@
         const cancelBtn = document.getElementById('cancelAssignmentBtn');
         const addBtn = document.getElementById('addAssignmentBtn');
 
+        // Bulk Add
+        const bulkForm = document.getElementById('bulkForm');
+        const bulkFacultyName = document.getElementById('bulkFacultyName');
+        const bulkSubject = document.getElementById('bulkSubject');
+        const bulkCourse = document.getElementById('bulkCourse');
+        const bulkSection = document.getElementById('bulkSection');
+        const bulkBuildingSelect = document.getElementById('bulkBuildingSelect');
+        const bulkFloorSelect = document.getElementById('bulkFloorSelect');
+        const bulkRoomSelect = document.getElementById('bulkRoomSelect');
+        const bulkStartTime = document.getElementById('bulkStartTime');
+        const bulkEndTime = document.getElementById('bulkEndTime');
+        const bulkRemarks = document.getElementById('bulkRemarks');
+        const bulkDayCheckboxes = document.getElementById('bulkDayCheckboxes');
+        const saveBulkBtn = document.getElementById('saveBulkBtn');
+        const cancelBulkBtn = document.getElementById('cancelBulkBtn');
+
+        // Matrix
+        const matrixContainer = document.getElementById('matrixContainer');
+        const matrixBuilding = document.getElementById('matrixBuilding');
+        const matrixFloor = document.getElementById('matrixFloor');
+        const matrixRoom = document.getElementById('matrixRoom');
+        const loadMatrixBtn = document.getElementById('loadMatrixBtn');
+        const matrixHead = document.getElementById('matrixHead');
+        const matrixBody = document.getElementById('matrixBody');
+
+        // Bulk Grid
+        const bulkGridContainer = document.getElementById('bulkGridContainer');
+        const bulkGridBody = document.getElementById('bulkGridBody');
+        const addGridRowBtn = document.getElementById('addGridRowBtn');
+        const saveGridBtn = document.getElementById('saveGridBtn');
+
+        // Tabs
+        const quickAddTab = document.getElementById('quickAddTab');
+        const bulkAddTab = document.getElementById('bulkAddTab');
+        const matrixTab = document.getElementById('matrixTab');
+        const gridTab = document.getElementById('gridTab');
+
+        // Table
         const tableBody = document.getElementById('tableBody');
         const tableSearch = document.getElementById('tableSearch');
         const tableFilterDay = document.getElementById('tableFilterDay');
@@ -1040,11 +1455,12 @@
         const modalMessage = document.getElementById('modalMessage');
         const modalConfirmBtn = document.getElementById('modalConfirmBtn');
         const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const modalExtraContent = document.getElementById('modalExtraContent');
 
         const loader = document.getElementById('loaderOverlay');
         const toastContainer = document.getElementById('toastContainer');
 
-        // Room data by building and floor
+        // Room data
         const roomData = {
             'NEW CAS BUILDING': {
                 1: ['NCAS 1', 'NCAS 2', 'NCAS 3', 'NCAS 4', 'NCAS 5'],
@@ -1064,55 +1480,14 @@
         let overallPieChart = null;
         let buildingBarChart = null;
 
-        // Update floor options based on building
-        function updateFloorOptions() {
-            const building = buildingSelect.value;
-            const floors = Object.keys(roomData[building] || {}).map(Number);
-            floorSelect.innerHTML = '';
-            floors.forEach(floor => {
-                const option = document.createElement('option');
-                option.value = floor;
-                option.textContent = floor;
-                floorSelect.appendChild(option);
-            });
-            // Update rooms for the first floor
-            updateRoomOptions();
-        }
-
-        // Update room options based on building and floor
-        function updateRoomOptions() {
-            const building = buildingSelect.value;
-            const floor = parseInt(floorSelect.value);
-            const rooms = roomData[building]?.[floor] || [];
-            roomSelect.innerHTML = '';
-            rooms.forEach(room => {
-                const option = document.createElement('option');
-                option.value = room;
-                option.textContent = room;
-                roomSelect.appendChild(option);
-            });
-            if (rooms.length === 0) {
-                const option = document.createElement('option');
-                option.value = '';
-                option.textContent = 'No rooms available';
-                roomSelect.appendChild(option);
-            }
-        }
-
-        // Event listeners for building and floor changes
-        buildingSelect.addEventListener('change', () => {
-            updateFloorOptions();
-        });
-
-        floorSelect.addEventListener('change', updateRoomOptions);
-
         // State
         let allAssignments = [];
         let editingId = null;
         let currentPage = 1;
         const pageSize = 10;
+        let matrixData = {};
 
-        // Helpers
+        // ---- Helper Functions ----
         function showToast(msg, type = 'info') {
             const el = document.createElement('div');
             el.className = `toast-item ${type}`;
@@ -1125,10 +1500,11 @@
             loader.classList.toggle('active', show);
         }
 
-        function showModal(title, msg, confirmText = 'Confirm', onConfirm = null) {
+        function showModal(title, msg, confirmText = 'Confirm', onConfirm = null, extraContent = '') {
             modalTitle.textContent = title;
             modalMessage.textContent = msg;
             modalConfirmBtn.textContent = confirmText;
+            modalExtraContent.innerHTML = extraContent || '';
             modalOverlay.classList.add('active');
             modalConfirmBtn.onclick = () => {
                 modalOverlay.classList.remove('active');
@@ -1139,13 +1515,11 @@
 
         function closeModal() { modalOverlay.classList.remove('active'); }
 
-        // Get today's day name
         function getTodayDay() {
             const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             return days[new Date().getDay()];
         }
 
-        // Get status
         function getStatus(startTime, endTime) {
             const now = new Date();
             const today = new Date();
@@ -1160,7 +1534,46 @@
             return 'finished';
         }
 
-        // ----- UPDATE DASHBOARD STATS -----
+        function checkConflict(assignments, newAssignment) {
+            return assignments.some(a =>
+                a.room === newAssignment.room &&
+                a.day === newAssignment.day &&
+                a.startTime < newAssignment.endTime &&
+                a.endTime > newAssignment.startTime
+            );
+        }
+
+        function getFloorOptions(building) {
+            return Object.keys(roomData[building] || {}).map(Number).sort((a, b) => a - b);
+        }
+
+        function getRoomOptions(building, floor) {
+            return roomData[building]?.[floor] || [];
+        }
+
+        function updateFloorOptions(selectElement, building) {
+            const floors = getFloorOptions(building);
+            selectElement.innerHTML = '';
+            floors.forEach(floor => {
+                const option = document.createElement('option');
+                option.value = floor;
+                option.textContent = floor;
+                selectElement.appendChild(option);
+            });
+        }
+
+        function updateRoomOptions(selectElement, building, floor) {
+            const rooms = getRoomOptions(building, floor);
+            selectElement.innerHTML = '';
+            rooms.forEach(room => {
+                const option = document.createElement('option');
+                option.value = room;
+                option.textContent = room;
+                selectElement.appendChild(option);
+            });
+        }
+
+        // ---- Update Dashboard Stats ----
         function updateDashboardStats() {
             const rooms = new Set(allAssignments.map(a => a.room));
             const subjects = new Set(allAssignments.map(a => a.subject));
@@ -1174,7 +1587,6 @@
             statTotalFaculty.textContent = faculty.size || 0;
             statTodayAssigned.textContent = todayAssignments.length || 0;
 
-            // Building analytics
             const buildings = ['NEW CAS BUILDING', 'ACAD BUILDING'];
             let overallAvailableCount = 0;
             let overallOccupiedCount = 0;
@@ -1182,17 +1594,13 @@
 
             buildings.forEach(building => {
                 const buildingAssignments = allAssignments.filter(a => a.building === building);
-
-                // Get all rooms for this building from roomData
                 const totalRoomsList = roomData[building];
                 let allBuildingRooms = [];
                 Object.values(totalRoomsList || {}).forEach(roomArray => {
                     allBuildingRooms = allBuildingRooms.concat(roomArray);
                 });
 
-                // Count occupied rooms (rooms that have an assignment that is currently occupied)
                 const occupiedRooms = new Set();
-
                 buildingAssignments.forEach(a => {
                     const status = getStatus(a.startTime, a.endTime);
                     if (status === 'occupied') {
@@ -1200,14 +1608,12 @@
                     }
                 });
 
-                // Available rooms = all rooms that are not occupied
                 const availableRooms = allBuildingRooms.filter(r => !occupiedRooms.has(r));
 
                 overallAvailableCount += availableRooms.length;
                 overallOccupiedCount += occupiedRooms.size;
                 overallTotalCount += allBuildingRooms.length;
 
-                // Update DOM
                 const totalEl = building === 'NEW CAS BUILDING' ? newCasTotal : acadTotal;
                 const availableEl = building === 'NEW CAS BUILDING' ? newCasAvailable : acadAvailable;
                 const occupiedEl = building === 'NEW CAS BUILDING' ? newCasOccupied : acadOccupied;
@@ -1217,24 +1623,17 @@
                 occupiedEl.textContent = occupiedRooms.size || 0;
             });
 
-            // Update overall stats
             overallTotal.textContent = overallTotalCount || 0;
             overallAvailable.textContent = overallAvailableCount || 0;
             overallOccupied.textContent = overallOccupiedCount || 0;
 
-            // Update charts
             updateCharts(overallAvailableCount, overallOccupiedCount);
         }
 
-        // ----- UPDATE CHARTS -----
+        // ---- Update Charts ----
         function updateCharts(available, occupied) {
-            // Overall Pie Chart
             const ctx1 = document.getElementById('overallPieChart').getContext('2d');
-
-            if (overallPieChart) {
-                overallPieChart.destroy();
-            }
-
+            if (overallPieChart) overallPieChart.destroy();
             overallPieChart = new Chart(ctx1, {
                 type: 'pie',
                 data: {
@@ -1252,49 +1651,33 @@
                     plugins: {
                         legend: {
                             position: 'bottom',
-                            labels: {
-                                padding: 12,
-                                usePointStyle: true,
-                                pointStyle: 'circle'
-                            }
+                            labels: { padding: 12, usePointStyle: true, pointStyle: 'circle' }
                         }
                     },
                     cutout: '60%'
                 }
             });
 
-            // Building Bar Chart
             const ctx2 = document.getElementById('buildingBarChart').getContext('2d');
-
             const newCasRooms = roomData['NEW CAS BUILDING'];
             let newCasTotalRooms = 0;
-            Object.values(newCasRooms || {}).forEach(roomArray => {
-                newCasTotalRooms += roomArray.length;
-            });
+            Object.values(newCasRooms || {}).forEach(roomArray => { newCasTotalRooms += roomArray.length; });
 
             const acadRooms = roomData['ACAD BUILDING'];
             let acadTotalRooms = 0;
-            Object.values(acadRooms || {}).forEach(roomArray => {
-                acadTotalRooms += roomArray.length;
-            });
+            Object.values(acadRooms || {}).forEach(roomArray => { acadTotalRooms += roomArray.length; });
 
             const newCasOccupiedCount = parseInt(newCasOccupied.textContent) || 0;
             const acadOccupiedCount = parseInt(acadOccupied.textContent) || 0;
 
-            if (buildingBarChart) {
-                buildingBarChart.destroy();
-            }
-
+            if (buildingBarChart) buildingBarChart.destroy();
             buildingBarChart = new Chart(ctx2, {
                 type: 'bar',
                 data: {
                     labels: ['NEW CAS BUILDING', 'ACAD BUILDING'],
                     datasets: [{
                         label: 'Available',
-                        data: [
-                            newCasTotalRooms - newCasOccupiedCount,
-                            acadTotalRooms - acadOccupiedCount
-                        ],
+                        data: [newCasTotalRooms - newCasOccupiedCount, acadTotalRooms - acadOccupiedCount],
                         backgroundColor: '#28a745',
                         borderRadius: 4
                     }, {
@@ -1310,25 +1693,12 @@
                     plugins: {
                         legend: {
                             position: 'bottom',
-                            labels: {
-                                padding: 12,
-                                usePointStyle: true,
-                                pointStyle: 'circle'
-                            }
+                            labels: { padding: 12, usePointStyle: true, pointStyle: 'circle' }
                         }
                     },
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(0,0,0,0.05)'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
+                        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                        x: { grid: { display: false } }
                     },
                     barPercentage: 0.6,
                     categoryPercentage: 0.7
@@ -1336,7 +1706,7 @@
             });
         }
 
-        // ----- RENDER TABLE -----
+        // ---- RENDER TABLE ----
         function renderTable() {
             const search = tableSearch.value.toLowerCase().trim();
             const filterDay = tableFilterDay.value;
@@ -1355,7 +1725,6 @@
                 filtered = filtered.filter(a => a.day === filterDay);
             }
 
-            // Sort by day then time
             const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
             filtered.sort((a, b) => {
                 const dayA = dayOrder.indexOf(a.day);
@@ -1374,7 +1743,8 @@
             paginationInfo.textContent = `Showing ${start + 1}–${Math.min(end, total)} of ${total} entries`;
 
             if (!pageItems.length) {
-                tableBody.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:2rem;color:#6c7a8a;">No assignments found.</td></tr>`;
+                tableBody.innerHTML =
+                    `<tr><td colspan="11" style="text-align:center;padding:2rem;color:#6c7a8a;">No assignments found.</td></tr>`;
                 return;
             }
 
@@ -1400,7 +1770,6 @@
                 </tr>
             `).join('');
 
-            // Attach events
             tableBody.querySelectorAll('.edit-btn').forEach(btn => {
                 btn.addEventListener('click', () => editAssignment(btn.dataset.id));
             });
@@ -1408,14 +1777,13 @@
                 btn.addEventListener('click', () => deleteAssignment(btn.dataset.id));
             });
             tableBody.querySelectorAll('.duplicate-btn').forEach(btn => {
-                btn.addEventListener('click', () => duplicateAssignment(btn.dataset.id));
+                btn.addEventListener('click', () => openDuplicateModal(btn.dataset.id));
             });
 
-            // Update dashboard stats
             updateDashboardStats();
         }
 
-        // ----- CRUD OPERATIONS -----
+        // ---- QUICK ADD CRUD ----
         function resetForm() {
             editingId = null;
             facultyName.value = '';
@@ -1423,7 +1791,8 @@
             course.value = '';
             section.value = '';
             buildingSelect.value = 'NEW CAS BUILDING';
-            updateFloorOptions();
+            updateFloorOptions(floorSelect, 'NEW CAS BUILDING');
+            updateRoomOptions(roomSelect, 'NEW CAS BUILDING', parseInt(floorSelect.value));
             daySelect.value = 'Monday';
             startTimeInput.value = '';
             endTimeInput.value = '';
@@ -1431,19 +1800,18 @@
             saveBtn.style.display = 'inline-flex';
             updateBtn.style.display = 'none';
             formTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Add Assignment';
-            assignmentForm.classList.remove('visible');
-        }
-
-        function showForm() {
             assignmentForm.classList.add('visible');
-            assignmentForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        addBtn.addEventListener('click', () => {
+        function showQuickForm() {
             resetForm();
-            showForm();
-        });
+            assignmentForm.classList.add('visible');
+            bulkForm.classList.remove('visible');
+            matrixContainer.style.display = 'none';
+            bulkGridContainer.style.display = 'none';
+        }
 
+        addBtn.addEventListener('click', showQuickForm);
         cancelBtn.addEventListener('click', resetForm);
 
         saveBtn.addEventListener('click', async () => {
@@ -1468,6 +1836,27 @@
                 return;
             }
 
+            // Check for conflicts
+            const conflicts = allAssignments.filter(a =>
+                a.room === data.room &&
+                a.day === data.day &&
+                a.startTime < data.endTime &&
+                a.endTime > data.startTime
+            );
+
+            if (conflicts.length > 0) {
+                showModal('Schedule Conflict',
+                    `${data.room} is already assigned on ${data.day} from ${data.startTime} to ${data.endTime}.`,
+                    'Save Anyway', async () => {
+                        await saveAssignment(data);
+                    });
+                return;
+            }
+
+            await saveAssignment(data);
+        });
+
+        async function saveAssignment(data) {
             showLoader(true);
             try {
                 await addDoc(collection(db, 'assignments'), data);
@@ -1478,7 +1867,7 @@
             } finally {
                 showLoader(false);
             }
-        });
+        }
 
         updateBtn.addEventListener('click', async () => {
             if (!editingId) return;
@@ -1521,9 +1910,9 @@
             course.value = a.course || '';
             section.value = a.section || '';
             buildingSelect.value = a.building || 'NEW CAS BUILDING';
-            updateFloorOptions();
+            updateFloorOptions(floorSelect, buildingSelect.value);
             floorSelect.value = a.floor || 1;
-            updateRoomOptions();
+            updateRoomOptions(roomSelect, buildingSelect.value, parseInt(floorSelect.value));
             roomSelect.value = a.room || 'NCAS 1';
             daySelect.value = a.day || 'Monday';
             startTimeInput.value = a.startTime || '';
@@ -1532,7 +1921,7 @@
             saveBtn.style.display = 'none';
             updateBtn.style.display = 'inline-flex';
             formTitle.innerHTML = '<i class="fas fa-edit"></i> Edit Assignment';
-            showForm();
+            showQuickForm();
         }
 
         function deleteAssignment(id) {
@@ -1549,28 +1938,196 @@
             });
         }
 
-        async function duplicateAssignment(id) {
+        // ---- DUPLICATE MODAL ----
+        function openDuplicateModal(id) {
             const a = allAssignments.find(x => x.id === id);
             if (!a) return;
-            const data = {
-                facultyName: a.facultyName || '',
-                subject: a.subject || '',
-                course: a.course || '',
-                section: a.section || '',
-                building: a.building || 'NEW CAS BUILDING',
-                floor: a.floor || 0,
-                room: a.room || 'NCAS 1',
-                day: a.day || 'Monday',
-                startTime: a.startTime || '',
-                endTime: a.endTime || '',
-                remarks: a.remarks || '',
-                createdAt: serverTimestamp(),
-                updatedAt: serverTimestamp()
+
+            const dayCheckboxes = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+                .map(d => `<label><input type="checkbox" value="${d}" ${d === a.day ? 'checked' : ''} /> ${d}</label>`)
+                .join('');
+
+            showModal('Duplicate Assignment',
+                `Original: ${a.facultyName} · ${a.subject} · ${a.room} · ${a.startTime}–${a.endTime}`,
+                'Create Assignments', async () => {
+                    const checkboxes = modalExtraContent.querySelectorAll('input[type="checkbox"]:checked');
+                    const days = Array.from(checkboxes).map(cb => cb.value);
+
+                    if (days.length === 0) {
+                        showToast('Please select at least one day.', 'error');
+                        return;
+                    }
+
+                    showLoader(true);
+                    try {
+                        const batch = writeBatch(db);
+                        const colRef = collection(db, 'assignments');
+
+                        days.forEach(day => {
+                            const newData = {
+                                facultyName: a.facultyName || '',
+                                subject: a.subject || '',
+                                course: a.course || '',
+                                section: a.section || '',
+                                building: a.building || 'NEW CAS BUILDING',
+                                floor: a.floor || 0,
+                                room: a.room || 'NCAS 1',
+                                day: day,
+                                startTime: a.startTime || '',
+                                endTime: a.endTime || '',
+                                remarks: a.remarks || '',
+                                createdAt: serverTimestamp(),
+                                updatedAt: serverTimestamp()
+                            };
+
+                            // Check conflicts
+                            const conflicts = allAssignments.filter(existing =>
+                                existing.room === newData.room &&
+                                existing.day === newData.day &&
+                                existing.startTime < newData.endTime &&
+                                existing.endTime > newData.startTime
+                            );
+
+                            if (conflicts.length > 0) {
+                                showToast(`Conflict: ${newData.room} on ${day} ${newData.startTime}–${newData.endTime} already occupied.`, 'error');
+                                return;
+                            }
+
+                            const newDocRef = doc(colRef);
+                            batch.set(newDocRef, newData);
+                        });
+
+                        await batch.commit();
+                        showToast(`Duplicated to ${days.length} day(s)!`, 'success');
+                        closeModal();
+                    } catch (e) {
+                        showToast('Error: ' + e.message, 'error');
+                    } finally {
+                        showLoader(false);
+                    }
+                },
+                `<div style="margin:1rem 0;">
+                    <p style="font-weight:600;margin-bottom:0.5rem;">Select days to duplicate to:</p>
+                    <div class="day-checkboxes">${dayCheckboxes}</div>
+                </div>`
+            );
+        }
+
+        // ---- BULK ADD ----
+        function showBulkForm() {
+            bulkForm.classList.add('visible');
+            assignmentForm.classList.remove('visible');
+            matrixContainer.style.display = 'none';
+            bulkGridContainer.style.display = 'none';
+            // Reset bulk form
+            bulkFacultyName.value = '';
+            bulkSubject.value = '';
+            bulkCourse.value = '';
+            bulkSection.value = '';
+            bulkBuildingSelect.value = 'NEW CAS BUILDING';
+            updateFloorOptions(bulkFloorSelect, 'NEW CAS BUILDING');
+            updateRoomOptions(bulkRoomSelect, 'NEW CAS BUILDING', parseInt(bulkFloorSelect.value));
+            bulkStartTime.value = '';
+            bulkEndTime.value = '';
+            bulkRemarks.value = '';
+            bulkDayCheckboxes.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+        }
+
+        // Sync bulk building/floor/room
+        bulkBuildingSelect.addEventListener('change', () => {
+            updateFloorOptions(bulkFloorSelect, bulkBuildingSelect.value);
+            updateRoomOptions(bulkRoomSelect, bulkBuildingSelect.value, parseInt(bulkFloorSelect.value));
+        });
+        bulkFloorSelect.addEventListener('change', () => {
+            updateRoomOptions(bulkRoomSelect, bulkBuildingSelect.value, parseInt(bulkFloorSelect.value));
+        });
+
+        saveBulkBtn.addEventListener('click', async () => {
+            const selectedDays = [];
+            bulkDayCheckboxes.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                selectedDays.push(cb.value);
+            });
+
+            if (selectedDays.length === 0) {
+                showToast('Please select at least one day.', 'error');
+                return;
+            }
+
+            const baseData = {
+                facultyName: bulkFacultyName.value.trim(),
+                subject: bulkSubject.value.trim(),
+                course: bulkCourse.value.trim(),
+                section: bulkSection.value.trim(),
+                building: bulkBuildingSelect.value,
+                floor: parseInt(bulkFloorSelect.value) || 0,
+                room: bulkRoomSelect.value,
+                startTime: bulkStartTime.value,
+                endTime: bulkEndTime.value,
+                remarks: bulkRemarks.value.trim()
             };
+
+            if (!baseData.facultyName || !baseData.subject || !baseData.room || !baseData.startTime || !baseData.endTime) {
+                showToast('Please fill in required fields: Faculty, Subject, Room, Start/End Time.', 'error');
+                return;
+            }
+
+            // Check conflicts
+            let conflicts = [];
+            selectedDays.forEach(day => {
+                const conflict = allAssignments.filter(a =>
+                    a.room === baseData.room &&
+                    a.day === day &&
+                    a.startTime < baseData.endTime &&
+                    a.endTime > baseData.startTime
+                );
+                if (conflict.length > 0) {
+                    conflicts.push({ day, conflict });
+                }
+            });
+
+            if (conflicts.length > 0) {
+                const conflictMsg = conflicts.map(c =>
+                    `${c.day}: ${c.conflict[0].facultyName} · ${c.conflict[0].subject} (${c.conflict[0].startTime}–${c.conflict[0].endTime})`
+                ).join('\n');
+                showModal('Schedule Conflict',
+                    `The following conflicts were found for ${baseData.room}:\n${conflictMsg}`,
+                    'Save Anyway', async () => {
+                        await saveBulkAssignments(baseData, selectedDays);
+                    });
+                return;
+            }
+
+            await saveBulkAssignments(baseData, selectedDays);
+        });
+
+        async function saveBulkAssignments(baseData, days) {
             showLoader(true);
             try {
-                await addDoc(collection(db, 'assignments'), data);
-                showToast('Assignment duplicated!', 'success');
+                const batch = writeBatch(db);
+                const colRef = collection(db, 'assignments');
+
+                days.forEach(day => {
+                    const data = {
+                        ...baseData,
+                        day: day,
+                        createdAt: serverTimestamp(),
+                        updatedAt: serverTimestamp()
+                    };
+                    const newDocRef = doc(colRef);
+                    batch.set(newDocRef, data);
+                });
+
+                await batch.commit();
+                showToast(`${days.length} assignment(s) created successfully!`, 'success');
+                // Reset form
+                bulkDayCheckboxes.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                bulkFacultyName.value = '';
+                bulkSubject.value = '';
+                bulkCourse.value = '';
+                bulkSection.value = '';
+                bulkStartTime.value = '';
+                bulkEndTime.value = '';
+                bulkRemarks.value = '';
             } catch (e) {
                 showToast('Error: ' + e.message, 'error');
             } finally {
@@ -1578,7 +2135,512 @@
             }
         }
 
-        // ----- FIREBASE LISTENER -----
+        cancelBulkBtn.addEventListener('click', () => {
+            bulkForm.classList.remove('visible');
+            assignmentForm.classList.add('visible');
+        });
+
+        // ---- SCHEDULE MATRIX ----
+        function showMatrix() {
+            matrixContainer.style.display = 'block';
+            bulkForm.classList.remove('visible');
+            assignmentForm.classList.remove('visible');
+            bulkGridContainer.style.display = 'none';
+            loadMatrix();
+        }
+
+        // Populate matrix floor/room dropdowns
+        function populateMatrixDropdowns() {
+            const building = matrixBuilding.value;
+            const floors = getFloorOptions(building);
+            matrixFloor.innerHTML = '';
+            floors.forEach(floor => {
+                const opt = document.createElement('option');
+                opt.value = floor;
+                opt.textContent = floor;
+                matrixFloor.appendChild(opt);
+            });
+            updateMatrixRoomOptions();
+        }
+
+        function updateMatrixRoomOptions() {
+            const building = matrixBuilding.value;
+            const floor = parseInt(matrixFloor.value);
+            const rooms = getRoomOptions(building, floor);
+            matrixRoom.innerHTML = '';
+            rooms.forEach(room => {
+                const opt = document.createElement('option');
+                opt.value = room;
+                opt.textContent = room;
+                matrixRoom.appendChild(opt);
+            });
+        }
+
+        matrixBuilding.addEventListener('change', populateMatrixDropdowns);
+        matrixFloor.addEventListener('change', updateMatrixRoomOptions);
+
+        loadMatrixBtn.addEventListener('click', loadMatrix);
+
+        function loadMatrix() {
+            const building = matrixBuilding.value;
+            const floor = parseInt(matrixFloor.value);
+            const room = matrixRoom.value;
+
+            if (!room) {
+                showToast('Please select a room.', 'error');
+                return;
+            }
+
+            // Get assignments for this room
+            const roomAssignments = allAssignments.filter(a =>
+                a.building === building &&
+                a.floor === floor &&
+                a.room === room
+            );
+
+            // Time slots: 7:00 AM to 10:00 PM in 1-hour increments
+            const timeSlots = [];
+            for (let h = 7; h <= 21; h++) {
+                const start = `${h.toString().padStart(2, '0')}:00`;
+                const end = `${(h + 1).toString().padStart(2, '0')}:00`;
+                timeSlots.push({ start, end, label: `${h}:00–${h+1}:00` });
+            }
+
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+            // Build table
+            let theadHtml = '<tr><th>Time</th>';
+            days.forEach(day => {
+                theadHtml += `<th>${day}</th>`;
+            });
+            theadHtml += '</tr>';
+            matrixHead.innerHTML = theadHtml;
+
+            let tbodyHtml = '';
+            timeSlots.forEach(slot => {
+                tbodyHtml += `<tr><td><strong>${slot.label}</strong></td>`;
+                days.forEach(day => {
+                    const existing = roomAssignments.filter(a =>
+                        a.day === day &&
+                        a.startTime === slot.start &&
+                        a.endTime === slot.end
+                    );
+
+                    if (existing.length > 0) {
+                        const first = existing[0];
+                        tbodyHtml += `
+                            <td>
+                                <button class="slot-btn occupied" data-id="${first.id}">
+                                    <i class="fas fa-user"></i> ${first.facultyName?.split(' ').slice(0,2).join(' ') || 'Occupied'}
+                                    <div class="slot-info">${first.subject || ''}</div>
+                                </button>
+                            </td>
+                        `;
+                    } else {
+                        tbodyHtml += `
+                            <td>
+                                <button class="slot-btn" data-building="${building}" data-floor="${floor}" data-room="${room}" data-day="${day}" data-start="${slot.start}" data-end="${slot.end}">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </td>
+                        `;
+                    }
+                });
+                tbodyHtml += '</tr>';
+            });
+
+            matrixBody.innerHTML = tbodyHtml;
+
+            // Add event listeners to Add buttons
+            matrixBody.querySelectorAll('.slot-btn:not(.occupied)').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    openMatrixAssignmentModal({
+                        building: btn.dataset.building,
+                        floor: parseInt(btn.dataset.floor),
+                        room: btn.dataset.room,
+                        day: btn.dataset.day,
+                        startTime: btn.dataset.start,
+                        endTime: btn.dataset.end
+                    });
+                });
+            });
+
+            // Click on occupied to view/edit
+            matrixBody.querySelectorAll('.slot-btn.occupied').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    editAssignment(id);
+                });
+            });
+        }
+
+        function openMatrixAssignmentModal(data) {
+            // Create a mini form inside modal
+            const formHtml = `
+                <div style="margin:1rem 0;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
+                        <div>
+                            <label style="font-weight:600;font-size:0.8rem;display:block;">Faculty</label>
+                            <input type="text" id="matrixFaculty" placeholder="Faculty name" style="width:100%;padding:0.5rem;border:2px solid #e2e8f0;border-radius:30px;" />
+                        </div>
+                        <div>
+                            <label style="font-weight:600;font-size:0.8rem;display:block;">Subject</label>
+                            <input type="text" id="matrixSubject" placeholder="Subject" style="width:100%;padding:0.5rem;border:2px solid #e2e8f0;border-radius:30px;" />
+                        </div>
+                        <div>
+                            <label style="font-weight:600;font-size:0.8rem;display:block;">Course</label>
+                            <input type="text" id="matrixCourse" placeholder="Course" style="width:100%;padding:0.5rem;border:2px solid #e2e8f0;border-radius:30px;" />
+                        </div>
+                        <div>
+                            <label style="font-weight:600;font-size:0.8rem;display:block;">Section</label>
+                            <input type="text" id="matrixSection" placeholder="Section" style="width:100%;padding:0.5rem;border:2px solid #e2e8f0;border-radius:30px;" />
+                        </div>
+                    </div>
+                    <div style="margin-top:0.8rem;">
+                        <label style="font-weight:600;font-size:0.8rem;display:block;">Remarks</label>
+                        <textarea id="matrixRemarks" rows="2" placeholder="Optional notes" style="width:100%;padding:0.5rem;border:2px solid #e2e8f0;border-radius:30px;"></textarea>
+                    </div>
+                    <div style="margin-top:0.8rem;font-size:0.85rem;color:var(--text-muted);">
+                        <i class="fas fa-info-circle"></i> ${data.room} · ${data.day} · ${data.startTime}–${data.endTime}
+                    </div>
+                </div>
+            `;
+
+            showModal('Add Assignment',
+                `Add assignment for ${data.room} on ${data.day}`,
+                'Save', async () => {
+                    const faculty = document.getElementById('matrixFaculty').value.trim();
+                    const subject = document.getElementById('matrixSubject').value.trim();
+                    const course = document.getElementById('matrixCourse').value.trim();
+                    const section = document.getElementById('matrixSection').value.trim();
+                    const remarks = document.getElementById('matrixRemarks').value.trim();
+
+                    if (!faculty || !subject) {
+                        showToast('Faculty and Subject are required.', 'error');
+                        return;
+                    }
+
+                    const newData = {
+                        facultyName: faculty,
+                        subject: subject,
+                        course: course,
+                        section: section,
+                        building: data.building,
+                        floor: data.floor,
+                        room: data.room,
+                        day: data.day,
+                        startTime: data.startTime,
+                        endTime: data.endTime,
+                        remarks: remarks,
+                        createdAt: serverTimestamp(),
+                        updatedAt: serverTimestamp()
+                    };
+
+                    // Check conflict
+                    const conflicts = allAssignments.filter(a =>
+                        a.room === newData.room &&
+                        a.day === newData.day &&
+                        a.startTime < newData.endTime &&
+                        a.endTime > newData.startTime
+                    );
+
+                    if (conflicts.length > 0) {
+                        showModal('Schedule Conflict',
+                            `${newData.room} is already assigned on ${newData.day} from ${newData.startTime} to ${newData.endTime}.`,
+                            'Save Anyway', async () => {
+                                await saveMatrixAssignment(newData);
+                            });
+                        return;
+                    }
+
+                    await saveMatrixAssignment(newData);
+                },
+                formHtml
+            );
+        }
+
+        async function saveMatrixAssignment(data) {
+            showLoader(true);
+            try {
+                await addDoc(collection(db, 'assignments'), data);
+                showToast('Assignment added successfully!', 'success');
+                closeModal();
+                loadMatrix();
+            } catch (e) {
+                showToast('Error: ' + e.message, 'error');
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        // ---- BULK GRID ----
+        let gridRowCount = 0;
+
+        function showBulkGrid() {
+            bulkGridContainer.style.display = 'block';
+            matrixContainer.style.display = 'none';
+            bulkForm.classList.remove('visible');
+            assignmentForm.classList.remove('visible');
+            if (bulkGridBody.children.length === 0) {
+                addGridRow();
+            }
+        }
+
+        function addGridRow() {
+            const row = document.createElement('tr');
+            row.id = `grid-row-${gridRowCount}`;
+            const building = 'NEW CAS BUILDING';
+            const floors = getFloorOptions(building);
+
+            let floorOptions = '';
+            floors.forEach(f => {
+                floorOptions += `<option value="${f}">${f}</option>`;
+            });
+
+            // Get rooms for first floor
+            const rooms = getRoomOptions(building, floors[0] || 1);
+            let roomOptions = '';
+            rooms.forEach(r => {
+                roomOptions += `<option value="${r}">${r}</option>`;
+            });
+
+            row.innerHTML = `
+                <td><input type="text" class="grid-faculty" placeholder="Faculty" /></td>
+                <td><input type="text" class="grid-subject" placeholder="Subject" /></td>
+                <td><input type="text" class="grid-course" placeholder="Course" /></td>
+                <td><input type="text" class="grid-section" placeholder="Section" /></td>
+                <td>
+                    <select class="grid-building">
+                        <option value="NEW CAS BUILDING">NEW CAS BUILDING</option>
+                        <option value="ACAD BUILDING">ACAD BUILDING</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="grid-floor">${floorOptions}</select>
+                </td>
+                <td>
+                    <select class="grid-room">${roomOptions}</select>
+                </td>
+                <td>
+                    <select class="grid-day">
+                        <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+                        <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
+                    </select>
+                </td>
+                <td><input type="time" class="grid-start" /></td>
+                <td><input type="time" class="grid-end" /></td>
+                <td><input type="text" class="grid-remarks" placeholder="Remarks" /></td>
+                <td><button class="btn-secondary" style="padding:0.2rem 0.6rem;font-size:0.8rem;" onclick="removeGridRow(${gridRowCount})"><i class="fas fa-trash"></i></button></td>
+            `;
+
+            // Add change listeners for building/floor to update rooms
+            const buildingSelect = row.querySelector('.grid-building');
+            const floorSelect = row.querySelector('.grid-floor');
+            const roomSelect = row.querySelector('.grid-room');
+
+            buildingSelect.addEventListener('change', () => {
+                const bld = buildingSelect.value;
+                const floors = getFloorOptions(bld);
+                floorSelect.innerHTML = '';
+                floors.forEach(f => {
+                    const opt = document.createElement('option');
+                    opt.value = f;
+                    opt.textContent = f;
+                    floorSelect.appendChild(opt);
+                });
+                updateGridRoomOptions(row);
+            });
+
+            floorSelect.addEventListener('change', () => {
+                updateGridRoomOptions(row);
+            });
+
+            bulkGridBody.appendChild(row);
+            gridRowCount++;
+        }
+
+        function updateGridRoomOptions(row) {
+            const bld = row.querySelector('.grid-building').value;
+            const floor = parseInt(row.querySelector('.grid-floor').value);
+            const rooms = getRoomOptions(bld, floor);
+            const roomSelect = row.querySelector('.grid-room');
+            roomSelect.innerHTML = '';
+            rooms.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r;
+                opt.textContent = r;
+                roomSelect.appendChild(opt);
+            });
+        }
+
+        // Make removeGridRow global for inline onclick
+        window.removeGridRow = function(id) {
+            const row = document.getElementById(`grid-row-${id}`);
+            if (row && bulkGridBody.children.length > 1) {
+                row.remove();
+            } else {
+                showToast('Keep at least one row.', 'error');
+            }
+        };
+
+        addGridRowBtn.addEventListener('click', addGridRow);
+
+        saveGridBtn.addEventListener('click', async () => {
+            const rows = bulkGridBody.querySelectorAll('tr');
+            const assignments = [];
+            let hasError = false;
+
+            rows.forEach(row => {
+                const faculty = row.querySelector('.grid-faculty').value.trim();
+                const subject = row.querySelector('.grid-subject').value.trim();
+                const course = row.querySelector('.grid-course').value.trim();
+                const section = row.querySelector('.grid-section').value.trim();
+                const building = row.querySelector('.grid-building').value;
+                const floor = parseInt(row.querySelector('.grid-floor').value);
+                const room = row.querySelector('.grid-room').value;
+                const day = row.querySelector('.grid-day').value;
+                const start = row.querySelector('.grid-start').value;
+                const end = row.querySelector('.grid-end').value;
+                const remarks = row.querySelector('.grid-remarks').value.trim();
+
+                if (!faculty || !subject || !room || !start || !end) {
+                    hasError = true;
+                    return;
+                }
+
+                assignments.push({
+                    facultyName: faculty,
+                    subject: subject,
+                    course: course,
+                    section: section,
+                    building: building,
+                    floor: floor,
+                    room: room,
+                    day: day,
+                    startTime: start,
+                    endTime: end,
+                    remarks: remarks
+                });
+            });
+
+            if (hasError) {
+                showToast('Please fill in required fields (Faculty, Subject, Room, Start, End) for all rows.', 'error');
+                return;
+            }
+
+            if (assignments.length === 0) {
+                showToast('No valid assignments to save.', 'error');
+                return;
+            }
+
+            // Check conflicts
+            let conflicts = [];
+            assignments.forEach(a => {
+                const conflict = allAssignments.filter(existing =>
+                    existing.room === a.room &&
+                    existing.day === a.day &&
+                    existing.startTime < a.endTime &&
+                    existing.endTime > a.startTime
+                );
+                if (conflict.length > 0) {
+                    conflicts.push({ assignment: a, conflict });
+                }
+            });
+
+            if (conflicts.length > 0) {
+                const conflictMsg = conflicts.map(c =>
+                    `${c.assignment.room} on ${c.assignment.day} ${c.assignment.startTime}–${c.assignment.endTime}: ${c.conflict[0].facultyName} · ${c.conflict[0].subject}`
+                ).join('\n');
+                showModal('Schedule Conflict',
+                    `The following conflicts were found:\n${conflictMsg}`,
+                    'Save Anyway', async () => {
+                        await saveGridAssignments(assignments);
+                    });
+                return;
+            }
+
+            await saveGridAssignments(assignments);
+        });
+
+        async function saveGridAssignments(assignments) {
+            showLoader(true);
+            try {
+                const batch = writeBatch(db);
+                const colRef = collection(db, 'assignments');
+
+                assignments.forEach(a => {
+                    const data = {
+                        ...a,
+                        createdAt: serverTimestamp(),
+                        updatedAt: serverTimestamp()
+                    };
+                    const newDocRef = doc(colRef);
+                    batch.set(newDocRef, data);
+                });
+
+                await batch.commit();
+                showToast(`${assignments.length} assignment(s) created successfully!`, 'success');
+                // Clear grid
+                bulkGridBody.innerHTML = '';
+                gridRowCount = 0;
+                addGridRow();
+            } catch (e) {
+                showToast('Error: ' + e.message, 'error');
+            } finally {
+                showLoader(false);
+            }
+        }
+
+        // ---- TAB SWITCHING ----
+        quickAddTab.addEventListener('click', () => {
+            showQuickForm();
+            quickAddTab.style.background = 'var(--primary-blue)';
+            quickAddTab.style.color = 'white';
+            bulkAddTab.style.background = 'var(--primary-yellow)';
+            bulkAddTab.style.color = '#0a2f52';
+            matrixTab.style.background = '#17a2b8';
+            matrixTab.style.color = 'white';
+            gridTab.style.background = '#6f42c1';
+            gridTab.style.color = 'white';
+        });
+
+        bulkAddTab.addEventListener('click', () => {
+            showBulkForm();
+            quickAddTab.style.background = 'var(--primary-blue)';
+            quickAddTab.style.color = 'white';
+            bulkAddTab.style.background = 'var(--primary-yellow)';
+            bulkAddTab.style.color = '#0a2f52';
+            matrixTab.style.background = '#17a2b8';
+            matrixTab.style.color = 'white';
+            gridTab.style.background = '#6f42c1';
+            gridTab.style.color = 'white';
+        });
+
+        matrixTab.addEventListener('click', () => {
+            showMatrix();
+            quickAddTab.style.background = 'var(--primary-blue)';
+            quickAddTab.style.color = 'white';
+            bulkAddTab.style.background = 'var(--primary-yellow)';
+            bulkAddTab.style.color = '#0a2f52';
+            matrixTab.style.background = '#17a2b8';
+            matrixTab.style.color = 'white';
+            gridTab.style.background = '#6f42c1';
+            gridTab.style.color = 'white';
+        });
+
+        gridTab.addEventListener('click', () => {
+            showBulkGrid();
+            quickAddTab.style.background = 'var(--primary-blue)';
+            quickAddTab.style.color = 'white';
+            bulkAddTab.style.background = 'var(--primary-yellow)';
+            bulkAddTab.style.color = '#0a2f52';
+            matrixTab.style.background = '#17a2b8';
+            matrixTab.style.color = 'white';
+            gridTab.style.background = '#6f42c1';
+            gridTab.style.color = 'white';
+        });
+
+        // ---- FIREBASE LISTENER ----
         function listenAssignments() {
             const q = query(collection(db, 'assignments'), orderBy('createdAt', 'desc'));
             onSnapshot(q, (snapshot) => {
@@ -1587,12 +2649,16 @@
                     allAssignments.push({ id: doc.id, ...doc.data() });
                 });
                 renderTable();
+                // If matrix is visible, reload it
+                if (matrixContainer.style.display !== 'none') {
+                    loadMatrix();
+                }
             }, (err) => {
                 showToast('Firestore error: ' + err.message, 'error');
             });
         }
 
-        // ----- PAGINATION -----
+        // ---- PAGINATION ----
         prevPageBtn.addEventListener('click', () => {
             if (currentPage > 1) { currentPage--;
                 renderTable(); }
@@ -1604,19 +2670,27 @@
                 renderTable(); }
         });
 
-        // ----- SEARCH/FILTER -----
+        // ---- SEARCH/FILTER ----
         tableSearch.addEventListener('input', () => { currentPage = 1;
             renderTable(); });
         tableFilterDay.addEventListener('change', () => { currentPage = 1;
             renderTable(); });
 
-        // ----- AUTH GUARD -----
+        // ---- QUICK ADD SYNC ----
+        buildingSelect.addEventListener('change', () => {
+            updateFloorOptions(floorSelect, buildingSelect.value);
+            updateRoomOptions(roomSelect, buildingSelect.value, parseInt(floorSelect.value));
+        });
+        floorSelect.addEventListener('change', () => {
+            updateRoomOptions(roomSelect, buildingSelect.value, parseInt(floorSelect.value));
+        });
+
+        // ---- AUTH GUARD ----
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 window.location.href = 'login.html';
                 return;
             }
-            // Fetch user name
             try {
                 const userDoc = await getDocs(query(collection(db, 'users'), where('email', '==', user.email)));
                 let name = 'Admin';
@@ -1630,9 +2704,19 @@
                 userEmailDisplay.textContent = user.email;
             }
             listenAssignments();
+            // Init matrix dropdowns
+            populateMatrixDropdowns();
+            // Init quick add
+            updateFloorOptions(floorSelect, 'NEW CAS BUILDING');
+            updateRoomOptions(roomSelect, 'NEW CAS BUILDING', 1);
+            // Init bulk
+            updateFloorOptions(bulkFloorSelect, 'NEW CAS BUILDING');
+            updateRoomOptions(bulkRoomSelect, 'NEW CAS BUILDING', 1);
+            // Show quick add by default
+            showQuickForm();
         });
 
-        // ----- LOGOUT -----
+        // ---- LOGOUT ----
         logoutBtn.addEventListener('click', async () => {
             showModal('Logout', 'Are you sure you want to logout?', 'Logout', async () => {
                 showLoader(true);
@@ -1647,7 +2731,7 @@
             });
         });
 
-        // ----- SIDEBAR NAV -----
+        // ---- SIDEBAR NAV ----
         document.querySelectorAll('.sidebar-nav a').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1658,7 +2742,6 @@
                     pageTitle.innerHTML = '<i class="fas fa-th-large"></i> Dashboard';
                     dashboardSection.style.display = 'block';
                     assignmentsSection.style.display = 'none';
-                    assignmentForm.classList.remove('visible');
                 } else if (section === 'assignments') {
                     pageTitle.innerHTML = '<i class="fas fa-door-open"></i> Room Assignment';
                     dashboardSection.style.display = 'none';
@@ -1667,15 +2750,12 @@
             });
         });
 
-        // ----- MODAL CLOSE (outside) -----
+        // ---- MODAL CLOSE ----
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) closeModal();
         });
 
-        // Initialize form with default values
-        updateFloorOptions();
-
-        console.log('CAS Admin ready.');
+        console.log('CAS Admin ready with Bulk Entry features.');
     </script>
 </body>
 </html>
